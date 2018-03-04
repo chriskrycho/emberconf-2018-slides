@@ -9,6 +9,15 @@
 * Chris Krycho
 * Bill Pullen
 
+### Just in case...
+
+<https://github.com/chriskrycho/emberconf>
+
+```
+$ git clone https://github.com/chriskrycho/emberconf
+$ yarn
+```
+
 Note: Hello, everyone, and welcome to the TypeScript Up Your Ember.js App workshop. I figured I’d start by introducing myself briefly and having my TA Bill introduce himself.
 
 I’m a software engineer at Olo—we do white-label online ordering for restaurants. Our mobile web experience is an Ember.js application with about 20,000 lines of TypeScript. Right now, we are turning that mobile foundation into a responsive, progressive web application that will be _the_ white-label ordering experience at Olo. I’m also one of the maintainers of ember-cli-typescript, and an all-around nerd! We’ve been using TypeScript in our Ember app at Olo since late 2016—_well_ before it was easy or especially useful. But, happily, we’re now at a point where it’s both easy _and_ useful!
