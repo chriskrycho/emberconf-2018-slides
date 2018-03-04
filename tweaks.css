@@ -6,6 +6,10 @@
     --serif: 'Merriweather';
 }
 
+.reveal {
+    font-size: 60px;
+}
+
 .reveal h1,
 .reveal h2,
 .reveal h3,
@@ -39,12 +43,12 @@
 
 .reveal h4 {
     font-family: var(--serif);
-    margin: 0 0 1em;
+    margin: 0;
 }
 
 .reveal h5 {
     font-family: var(--serif);
-    margin: 0 0 1em;
+    margin: 0;
 }
 
 .reveal section img {
@@ -90,14 +94,15 @@
 }
 
 .reveal pre {
-    max-width: 42em;
-    margin: 2em auto;
+    width: auto;
+    max-width: 43em;
+    margin: 1em auto;
     font-size: 0.7em;
 }
 
 .reveal pre code {
     font-size: 1em;
-    padding: 1em;
+    padding: 0.75em;
     max-height: none;
 }
 

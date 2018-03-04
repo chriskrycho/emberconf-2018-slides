@@ -6,17 +6,11 @@
 
 ## Introductions
 
+<p class="invisible">*</p>
+
 * Chris Krycho
+
 * Bill Pullen
-
-### Just in case...
-
-<https://github.com/chriskrycho/emberconf>
-
-```
-$ git clone https://github.com/chriskrycho/emberconf
-$ yarn
-```
 
 Note: Hello, everyone, and welcome to the TypeScript Up Your Ember.js App workshop. I figured I’d start by introducing myself briefly and having my TA Bill introduce himself.
 
@@ -55,7 +49,18 @@ Note: Before we jump in, let’s talk through the basic approach I’m planning 
 * After another break, from 11:00 to about 11:45, we’ll work on **refactoring with TypeScript**, still using the TODO MVC app as our baseline. In a lot of ways, this is where the best parts of using TypeScript will really show up.
 * Finally, we’ll just spend the last 15 minutes on open discussion, questions, comments, etc. – anything Bill and I can answer from working on what is now (kind of hilariously) the largest and oldest Ember _TypeScript_ apps in the world, we’ll be happy to.
 
-If any of you _have not_ cloned the repository and run `yarn` to get everything set up, this first session is a good time to do that in the background. The link on the whiteboard here will take you straight to it. (https://github.com/chriskrycho/emberconf)
+---
+
+## Just in case...
+
+<https://github.com/chriskrycho/emberconf>
+
+```
+$ git clone https://github.com/chriskrycho/emberconf
+$ yarn
+```
+
+Note: If any of you _have not_ cloned the repository and run `yarn` to get everything set up, this first session is a good time to do that in the background. The link on the whiteboard here will take you straight to it. (https://github.com/chriskrycho/emberconf)
 
 *****
 
@@ -123,8 +128,7 @@ Note: TypeScript is _not_ like the type systems most people have experience with
 
 ```ts
 interface Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 ```
 
@@ -138,12 +142,11 @@ Note: In a structural type system, types are _just shapes_. Anything with that s
 
 ```ts
 interface Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
 function sayHello(p: Person) {
-  console.log(Hello, ${p.firstName} ${p.lastName}!);
+  console.log(`Hello, ${p.name}!`);
 }
 ```
 
@@ -157,17 +160,15 @@ Note: Then we can define a function which takes a `Person`.
 
 ```ts
 interface Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
 function sayHello(p: Person) {
-  console.log(Hello, ${p.firstName} ${p.lastName}!);
+  console.log(`Hello, ${p.name}!`);
 }
 
 const person = {
-  firstName: 'Chris',
-  lastName: 'Krycho',
+  name: 'Chris Krycho',
   favoriteHobby: 'running',
 };
 ```
@@ -182,17 +183,15 @@ Note: Then we can create an object which _doesn’t_ explicitly call itself a `P
 
 ```ts
 interface Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
 function sayHello(p: Person) {
-  console.log(Hello, ${p.firstName} ${p.lastName}!);
+  console.log(`Hello, ${p.name}!`);
 }
 
 const person = {
-  firstName: 'Chris',
-  lastName: 'Krycho',
+  name: 'Chris Krycho',
   favoriteHobby: 'running',
 };
 
@@ -207,27 +206,22 @@ Again: shapes are the only thing TypeScript cares about! And this is a huge diff
 
 ##### Structural typing: `class`
 
-<ul>
-<li class="fragment">*Names don’t matter.*</li>
-<li class="fragment">A `class` is just a way to _define_ and _construct_ a shape.</li>
-</ul>
+A `class` is just a way to _define_ and _construct_ a shape.
 
 ```ts
 class Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 
-  constructor(first: string, last: string) {
-    this.firstName = first;
-    this.lastName = last;
+  constructor(name: string) {
+    this.name = name;
   }
 }
 
 function sayHello(p: Person) {
-  console.log(`Hello, ${p.firstName} ${p.lastName}!`);
+  console.log(`Hello, ${p.name}!`);
 }
 
-const bill = { firstName: "Bill", lastName: "Pullen", employer: "Olo" };
+const bill = { name: "Bill Pullen", employer: "Olo" };
 sayHello(bill); // "Hello, Bill Pullen!
 ```
 <!-- .element: class="fragment" -->
@@ -358,14 +352,17 @@ let toString = (n: any) => `${n}`; // automatically returns string
 
 ```ts
 
-function moreComplicated(a: boolean) {
-  return a ? 'yay' : { say: 'what' };
+function moreComplicated() {
+  return someBooleanCheck()
+    ? 'yay'
+    : 42;
 }
 
 
 
 
-console.log(moreComplicated(true).say);
+let result = moreComplicated();
+console.log(result.length);
 ```
 
 Note: TypeScript can infer a _lot_. It’ll even infer more interesting types we haven’t talked about yet, like _union_ types. Here, TypeScript knows that we’re returning _either_ a string or an object with a key named “say” which has a string value. And when we go to use it, we’ll have to check what the type is, or TS will yell at us.
@@ -377,15 +374,18 @@ Note: TypeScript can infer a _lot_. It’ll even infer more interesting types we
 ###### Type inference: quite sophisticated
 
 ```ts
-// returns `string | { say: string }`
+// returns `string | number`
 function moreComplicated(a: boolean) {
-  return a ? 'yay' : { say: 'what' };
+  return someBooleanCheck()
+    ? 'yay'
+    : 42;
 }
 
-// Type error! We haven't checked whether `say` exists, and
-// in fact it *doesn't*, so this would blow up. But TS will
-// save us.
-console.log(moreComplicated(true).say);
+// Type error! We haven't checked whether `result` is a string or a
+// number, so TS will tell us we need to figure that out before we
+// try to do something with it.
+let result = moreComplicated();
+console.log(result.length);
 ```
 
 ---
@@ -465,7 +465,9 @@ function withGnarly(arg: {
   a: string[];
   b: number;
   c: { some: boolean };
-}): boolean { /* ... */ }
+}): boolean {
+  /* the implementation */
+}
 ```
 
 Note: A type alias is a way of telling TypeScript “When I use this name, it’s just a shorthand for this shape!” We can write shapes inline, but that gets nasty quickly. So we can create an alias for them and use that instead.
@@ -483,7 +485,9 @@ type Arg = {
   c: { some: boolean };
 };
 
-function withGnarly(arg: Arg): boolean { /* ... */ }
+function withGnarly(arg: Arg): boolean {
+  /* the implementation */
+}
 ```
 
 
@@ -514,17 +518,15 @@ TypeScript classes are just JavaScript classes with type annotations.
 
 ```ts
 class Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 
-  constructor(first: string, last: string) {
-    this.firstName = first;
-    this.lastName = last;
+  constructor(name: string) {
+    this.name = name;
   }
 }
 
 function sayHello(p: Person) {
-  console.log(`Hello, ${p.firstName} ${p.lastName}!`);
+  console.log(`Hello, ${p.name}!`);
 }
 ```
 
@@ -540,20 +542,18 @@ Note: A TypeScript class is _basically_ just a JavaScript class with type annota
 
 ```ts
 class Person {
-  firstName: string;
-  lastName: string;
+  name: string;
 
-  constructor(first: string, last: string) {
-    this.firstName = first;
-    this.lastName = last;
+  constructor(name: string) {
+    this.name = name;
   }
 }
 
 function sayHello(p: Person) {
-  console.log(`Hello, ${p.firstName} ${p.lastName}!`);
+  console.log(`Hello, ${p.name}!`);
 }
 
-const bill = { firstName: "Bill", lastName: "Pullen", employer: "Olo" };
+const bill = { name: "Bill Pullen", employer: "Olo" };
 sayHello(bill); // "Hello, Bill Pullen!
 ```
 
@@ -767,7 +767,7 @@ function fade(a: PrimaryColor, percent: number): string {
   // ...
 }
 
-convert(PrimaryColor.Red, 19);
+fade(PrimaryColor.Red, 19);
 ```
 
 Note: A TypeScript `enum` is _basically_ just a convenient way to define an object and a set of types associated with its values – to be able to say “The only thing allowed here is one of the values of this specific object.” So here, for example, we could define an RGB colors type and then we _have_ to pass in one of the `PrimaryColor` keys. We can’t pass in “purple” or even another hex color code string like `8800FF`!
@@ -817,14 +817,14 @@ let hallo: Hallo = {
 #### union types
 
 ```ts
-type Ok = { ok: true; value: number };
+type Ok = { ok: true; value: string };
 type Err = { ok: false; reason: string };
 type Validation = Ok | Err;
 
-function mightFail(succeed: boolean): Validation {
-  return succeed
-    ? { status: 'ok', value: 42 }
-    : { status: 'err', reason: '...you said to fail!' };
+function validate(formFields: FormField[]): Validation {
+  return formFields.every(field => field.isValid)
+    ? { ok: true, value: "You're good to go!" }
+    : { ok: false, reason: 'Whoops! There are some errors!' };
 }
 ```
 
@@ -839,21 +839,21 @@ With union types, we can write that out, and TypeScript will check us: if we try
 #### union types
 
 ```ts
-type Ok = { ok: true; value: number };
+type Ok = { ok: true; value: string };
 type Err = { ok: false; reason: string };
 type Validation = Ok | Err;
 
-function mightFail(succeed: boolean): Validation {
-  return succeed
-    ? { status: 'ok', value: 42 }
-    : { status: 'err', reason: '...you said to fail!' };
+function validate(formFields: FormField[]): Validation {
+  return formFields.every(field => field.isValid)
+    ? { ok: true, value: "You're good to go!" }
+    : { ok: false, reason: 'Whoops! There are some errors!' };
 }
 
-const yay = mightFail(true);
-if (yay.ok) {
-  console.log(yay.value); // can't touch `yay.reason` here
+const result = validate(formFields);
+if (result.ok) {
+  console.log(result.value); // can't touch `yay.reason` here
 } else {
-  console.log(yay.reason); // can't touch `yay.value` here.
+  console.error(result.reason); // can't touch `yay.value` here.
 }
 ```
 
@@ -868,8 +868,8 @@ type HasName = { name: string };
 interface HasMass { mass: number }
 class LivingThing { age: number }
 
-type Being = HasName & HasMass & LivingThing;
-let me: Being = { name: "Chris", mass: 72, age: 30 };
+type CorporealBeing = HasName & HasMass & LivingThing;
+let me: CorporealBeing = { name: "Chris", mass: 72, age: 30 };
 ```
 
 Note: An _intersection_ type is the counterpart to a _union_ type. Instead of saying a value can be “this _or_ that” it says the value is “this _and_ that.” This is kind of like doing `extends` with an `interface`… except that you can just mix and match them however you want. (And notice that you can do intersections with any kind of TS shape!)
@@ -926,9 +926,13 @@ These are handy for return types where you need to return more than one things �
 
 ## TypeScript Basics
 
-<!-- .element: class="fragment" -->…actually, that's it!
+<p class="invisible">*</p>
 
-<!-- .element: class="fragment" -->(I mean, okay: there *is* more, but that's enough to get started with!)
+<p class="invisible">*</p>
+
+…actually, that's it!
+
+(I mean, okay: there *is* more, but that's enough to get started with!)
 
 Note: Okay, so that’s it for TypeScript itself. We did not cover _everything_ in TypeScript, for sure, but we got through most stuff we’ll need. Any questions so far?
 
@@ -936,9 +940,13 @@ Note: Okay, so that’s it for TypeScript itself. We did not cover _everything_ 
 
 ## TypeScript in Ember.js
 
-<!-- .element: class="fragment" -->This is mostly just TypeScript!
+<p class="invisible">*</p>
 
-<!-- .element: class="fragment" -->_(Mostly!)_
+<p class="invisible">*</p>
+
+This is mostly just TypeScript!
+
+_(Mostly!)_
 
 Note: Using TypeScript in Ember is _mostly_ just like using it in general, but there are some definite gotchas. These gotchas are for things _as they are_, but in the workshop session I’m going to introduce things _as they are about to be_, which alleviate these a lot!
 
@@ -966,7 +974,7 @@ Note: The first thing we have to deal with is `Ember.Object`. Mostly, things her
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-#### `class` properties
+#### Using `class`
 
 ```ts
 import Component from '@ember/component';
@@ -974,9 +982,6 @@ import Component from '@ember/component';
 
 
 export default class UserProfile extends Component {
-
-
-
 
 
 
@@ -998,7 +1003,38 @@ Note: the syntax is a little different. Let’s walk through this _small_ exampl
 
 <!-- .slide: data-transition="fade" -->
 
-#### `class` properties
+#### Using `class`
+
+```ts
+import Component from '@ember/component';
+
+
+
+export default class UserProfile extends Component {
+
+
+
+
+
+
+
+
+  constructor() {
+    super();
+
+  }
+}
+```
+
+Note: We use the normal JavaScript class `constructor` instead of the Ember-specific `init` method. You _can_ use `init` but don’t need to for normal setup stuff anymore.
+
+Any time we extend another class, we *have* to call `super` if we use the `constructor`. That replaces doing `this._super(...arguments)` in `init`.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Using `class`
 
 ```ts
 import Component from '@ember/component';
@@ -1007,7 +1043,6 @@ import Component from '@ember/component';
 
 export default class UserProfile extends Component {
   name: string;
-  age: number;
 
 
 
@@ -1015,22 +1050,20 @@ export default class UserProfile extends Component {
 
 
 
+  constructor() {
+    super();
 
-
-
-
-
-
+  }
 }
 ```
 
-Note: We declare the types of the properties that get passed in, `firstName` and `lastName`.
+Note: We declare the types of the properties that get passed in: `name` is a string.
 
 ---
 
 <!-- .slide: data-transition="fade" -->
 
-#### `class` properties
+#### Using `class`
 
 ```ts
 import Component from '@ember/component';
@@ -1039,7 +1072,6 @@ import Component from '@ember/component';
 
 export default class UserProfile extends Component {
   name!: string;
-  age!: number;
 
 
 
@@ -1047,12 +1079,10 @@ export default class UserProfile extends Component {
 
 
 
+  constructor() {
+    super();
 
-
-
-
-
-
+  }
 }
 ```
 
@@ -1062,18 +1092,15 @@ Note: As of TypeScript 2.7, they need an exclamation point here to tell TypeScri
 
 <!-- .slide: data-transition="fade" -->
 
-#### `class` properties
+#### Using `class`
 
 ```ts
 import Component from '@ember/component';
-
+import { assert } from '@ember/debug';
 
 
 export default class UserProfile extends Component {
   name!: string;
-  age!: number;
-
-  home = 'Colorado';
 
 
 
@@ -1081,144 +1108,76 @@ export default class UserProfile extends Component {
 
 
 
+  constructor() {
+    super();
+    assert('`name` is required', !!this.name);
+  }
+}
+```
+
+Note: To avoid lying to TypeScript, we use the constructor check that you at least *received* the constructor arguments! Ember's `assert` will get stripped from production, so we do this alot.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Using `class`
+
+```ts
+import Component from '@ember/component';
+import { assert } from '@ember/debug';
+
+
+export default class UserProfile extends Component {
+  name!: string;
+
+  hobbies: string[] = [];
 
 
 
 
+
+  constructor() {
+    super();
+    assert('`name` is required', !!this.name);
+  }
 }
 ```
 
 Note: Doing it _this_ way, we _assign_ properties with `=` instead of doing it key-value style with `:`
 
----
-
-<!-- .slide: data-transition="fade" -->
-
-#### `class` properties
-
-```ts
-import Component from '@ember/component';
-
-
-
-export default class UserProfile extends Component {
-  name!: string;
-  age!: number;
-
-  home = 'Colorado';
-  hobbies: string[] = [];
-
-
-
-
-
-
-
-
-
-
-}
-```
-
-Note: We can assign an array as a property directly; we don’t have to put it in `init` to avoid sharing between instances – because these _are_ instance properties.
+We can assign an array as a property directly; we don’t have to put it in `init` to avoid sharing between instances – because these _are_ instance properties.
 
 ---
 
 <!-- .slide: data-transition="fade" -->
 
-#### `class` properties
+#### Using `class`
 
 ```ts
 import Component from '@ember/component';
-import { computed } from '@ember/object';
-
-
-export default class UserProfile extends Component {
-  name!: string;
-  age!: number;
-
-  home = 'Colorado';
-  hobbies: string[] = [];
-
-  desc = computed('name', 'age', function(this: UserProfile): string {
-    return `${this.name} is ${this.age} years old!`;
-  });
-
-
-
-
-
-
-}
-```
-
-Note: In the `computed` property callback, we specify the `this` type. More on that in just a minute!
-
----
-
-<!-- .slide: data-transition="fade" -->
-
-#### `class` properties
-
-```ts
-import Component from '@ember/component';
-import { computed } from '@ember/object';
-
-
-export default class UserProfile extends Component {
-  name!: string;
-  age!: number;
-
-  home = 'Colorado';
-  hobbies: string[] = [];
-
-  desc = computed('name', 'age', function(this: UserProfile): string {
-    return `${this.name} is ${this.age} years old!`;
-  });
-
-  constructor() {
-    super();
-
-
-  }
-}
-```
-
-Note: We use the normal JavaScript class `constructor` instead of the Ember-specific `init` method. You _can_ use `init` but don’t need to for normal setup stuff anymore.
-
----
-
-<!-- .slide: data-transition="fade-in slide-out" -->
-
-#### `class` properties
-
-```ts
-import Component from '@ember/component';
-import { computed } from '@ember/object';
 import { assert } from '@ember/debug';
+import { computed } from '@ember/object';
 
 export default class UserProfile extends Component {
   name!: string;
-  age!: number;
 
-  home = 'Colorado';
   hobbies: string[] = [];
 
-  desc = computed('name', 'age', function(this: UserProfile): string {
-    return `${this.name} is ${this.age} years old!`;
+  desc = computed('name', function(this: UserProfile): string {
+    return `You signed in as ${this.name}.`;
   });
 
   constructor() {
     super();
     assert('`name` is required', !!this.name);
-    assert('`age` is required', !!this.age);
   }
 }
 ```
 
-Note: The constructor is a great place to check that you at least *received* the constructor arguments! Ember's `assert` will get stripped from production, so we do this alot.
+Note: In the `computed` property callback, we specify the `this` type. More on that in just a minute!
 
-You may also have noticed that I didn’t do `.get()` here. That’s because I’m doing _everything_ from this point in the workshop forward with Ember 3.1 in mind. For nearly everything, we just get to do `this.name` instead of `this.get('name')`. (Proxied values are the only exception!)
+Note: You may also have noticed that I didn’t do `.get()` here. That’s because I’m doing _everything_ from this point in the workshop forward with Ember 3.1 in mind. For nearly everything, we just get to do `this.name` instead of `this.get('name')`. (Proxied values are the only exception!)
 
 ---
 
@@ -1325,8 +1284,8 @@ export default class UserProfile extends Component {
 
 
 
-  desc = computed('name', 'age', function(this: UserProfile): string {
-    return `${this.name} is ${this.age} years old!`;
+  desc = computed('name', function(this: UserProfile): string {
+    return `You signed in as ${this.name}.`;
   });
 
 
@@ -1361,9 +1320,7 @@ Note: We’re going to take a brief detour to talk about some things you’ll se
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-#### What for?
-
-How it looks *without* type registries:
+#### The world *without* type registries:
 
 ```ts
 import Component from '@ember/component';
@@ -1392,9 +1349,7 @@ Note: We want to be able to avoid massive boilerplate everywhere.
 
 <!-- .slide: data-transition="fade-in slide-out" -->
 
-#### What for?
-
-How it looks *with* type registries:
+#### The world *with* type registries:
 
 ```ts
 import Component from '@ember/component';
