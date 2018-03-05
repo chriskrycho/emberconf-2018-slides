@@ -72,38 +72,95 @@ So let’s dive right in! Let’s talk about TypeScript!
 
 ### What _is_ TypeScript?
 
+<p class="invisible">*</p>
+
 * _Basically_ a typed superset of JavaScript
+
 * _Strictly_ a compile-to-JavaScript language
+
 * But close enough that we can think of it that way
 
 Note: TypeScript is _basically_ a typed superset of JavaScript. I say _basically_ because there are a few constructs in TypeScript which don’t exist in JavaScript. We’ll talk about those in a few minutes, but the fact that those exist means TypeScript is _strictly speaking_ a distinct language which compiles to JavaScript. For most purposes, though, it’s fine to think of it as a superset of JavaScript with types.
 
 ---
 
+<!-- .slide: data-transition="slide-in fade-out" -->
+
 #### Cool, but why should I care?
 
-Two big developer experience differences:
+<p class="invisible">*</p>
 
-1.  Always-up-to-date documentation for functions and classes
-2.  Many fewer "undefined is not an object"errors
+Three big developer experience differences:
 
-And it’s not painful to use!
+1. <!-- .element: class="fragment" --> Always-up-to-date documentation for functions and classes
+
+    <p class="invisible">*</p>
 
 Note: So that’s all well and good, but _why should you care?_ Maybe that’s interesting if you’re (like me) kind of weirdly obsessed with type systems. But what does it gain you as JavaScript developer every day? How does it make your life easier?
 
-1.  How many of you here like having docs for your functions? Now, how many of you would like it if those docs were always _right_ and _up to date_? Well, the first thing about TypeScript is that that’s exactly what it gives you. My experience of using TypeScript is _not_, for the most part, the way I’ve felt in some other programming languages, where I’m writing down names of things just because. It’s more like just documenting “for this function to work _at all_, it needs you to pass in a thing that has _this property_ on it”—and then finding out _in my editor_ if I passed in the wrong thing, or if my function doesn’t return what the docs say it does. So that’s handy.
-
-2.  The second thing that makes TypeScript _really great_ is that it legitimately helps us ship fewer “undefined is not an object” kinds of errors to production. And I care about that not in the abstract sense but because every single one of those I ship to production means _something didn’t work for a user_. It also means it’s time I have to spend hunting down the cause of that bug instead of building something new—whether that new thing is adding a feature, or making the app work offline, or building a whole new product, or whatever else. TypeScript doesn’t get the count to zero, like some programming languages can—but it helps, a _lot_.
-
-Finally, it’s worth note that it’s not _painful to use_ in the way some typed languages have been. If I need to write “This function needs an object with a `quack` method on it that I can call” I can just write that inline, and we’ll see that in a few minutes! The types _cost_ a lot less than they do in the sort of “typical” typed languages out there, which makes their relative value a lot higher, too.
+First: How many of you here like having docs for your functions? Now, how many of you would like it if those docs were always _right_ and _up to date_? Well, the first thing about TypeScript is that that’s exactly what it gives you. My experience of using TypeScript is _not_, for the most part, the way I’ve felt in some other programming languages, where I’m writing down names of things just because. It’s more like just documenting “for this function to work _at all_, it needs you to pass in a thing that has _this property_ on it”—and then finding out _in my editor_ if I passed in the wrong thing, or if my function doesn’t return what the docs say it does. So that’s handy.
 
 ---
 
-### What _is_ TypeScript?
+<!-- .slide: data-transition="fade" -->
 
-* _Basically_ a typed superset of JavaScript
-* _Strictly_ a compile-to-JavaScript language
-* But close enough that we can think of it that way
+#### Cool, but why should I care?
+
+<p class="invisible">*</p>
+
+Three big developer experience differences:
+
+1. Always-up-to-date documentation for functions and classes
+
+2. Many fewer "undefined is not an object" errors
+
+Note: The second thing that makes TypeScript _really great_ is that it legitimately helps us ship fewer “undefined is not an object” kinds of errors to production. And I care about that not in the abstract sense but because every single one of those I ship to production means _something didn’t work for a user_. It also means it’s time I have to spend hunting down the cause of that bug instead of building something new—whether that new thing is adding a feature, or making the app work offline, or building a whole new product, or whatever else. TypeScript doesn’t get the count to zero, like some programming languages can—but it helps, a _lot_.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Cool, but why should I care?
+
+<p class="invisible">*</p>
+
+Three big developer experience differences:
+
+1. Always-up-to-date documentation for functions and classes
+
+2. Many fewer "undefined is not an object" errors
+
+3. Refactoring is *way* easier once your app is typed
+
+Note: Third, refactoring is way, *way* easier once your app is fully typed. And every section of it you get types written down for is easier to deal with going forward. I had a section of our app which had a pretty complicated dance of multiple requests, *not* amenable to normal Ember Data lookups, that ended up being several fetch calls which could fail, return nothing, or return the data I wanted. Despite it being one of the gnarliest parts of our codebase, I have also refactored it and fixed bugs in it *aggressively* and felt confident doing so because any time I missed a piece, I got an error!
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Cool, but why should I care?
+
+<p class="invisible">*</p>
+
+Three big developer experience differences:
+
+1. Always-up-to-date documentation for functions and classes
+
+2. Many fewer "undefined is not an object" errors
+
+3. Refactoring is *way* easier once your app is typed
+
+And it’s not painful to use!
+
+Note: Finally, it’s worth note that it’s not _painful to use_ in the way some typed languages have been. If I need to write “This function needs an object with a `quack` method on it that I can call” I can just write that inline, and we’ll see that in a few minutes! The types _cost_ a lot less than they do in the sort of “typical” typed languages out there, which makes their relative value a lot higher, too.
+
+---
+
+<p class="invisible">*</p>
+
+<p class="invisible">*</p>
+
+### Cool, so how do I use it?
 
 Note: Okay, so assuming that combo sounds like a win, _how_ does TypeScript do that, and especially in the context of an Ember.js app? To understand that, we need to spend the next few minutes getting a decent handle on TypeScript itself.
 
@@ -580,11 +637,13 @@ Note: classes can also implement interfaces and extend other classes. If they de
 
 ##### Writing shapes: when to use each
 
-<ul>
-<li class="fragment" data-fragment-index="1">`type` as the default</li>
-<li class="fragment" data-fragment-index="2">`interface` for defining shapes for more than one `class` to conform to</li>
-<li class="fragment" data-fragment-index="3">`class` for a convenient way to get a shape and a constructor at the same time</li>
-</ul>
+<p class="invisible">*</p>
+
+* <!-- .element: class="fragment" --> `type` as the default
+
+* <!-- .element: class="fragment" --> `interface` for defining shapes for more than one `class` to conform to
+
+* <!-- .element: class="fragment" --> `class` for a convenient way to get a shape and a constructor at the same time
 
 Note: My basic tack is I start with a `type` alias, and rarely go beyond that. That’s where you really get the “this is just documentation my editor helps me check!” approach. I switch to an `interface` only if I’m going to define multiple `class`es that need to implement a certain shape contract. And I use `class` pretty rarely _other_ than when I’m building Ember components or services or whatever. (My own code is mostly just functions, and `type` aliases work _great_ with functions!)
 
@@ -594,7 +653,10 @@ I should note: I’m offering an opinionated take here. This actually runs up ag
 
 #### “nullable” types: getting a handle on `null` and `undefined`!
 
+<p class="invisible">*</p>
+
 * the “optional” annotation
+
 * strict null checking
 
 Note: Next, one of the most important things TypeScript can help us with—I would argue, at least!—is `undefined` and `null`. How many people in this room have seen “undefined is not an object” or similar in the last week? Same. We’re slowly eradicating them from our app, but… it’s taking a while.
@@ -605,15 +667,16 @@ TypeScript gives us two tools we can combine to help us fix this problem: _optio
 
 ##### “nullable” types: the “optional” annotation
 
+<p class="invisible">*</p>
+
 ```ts
-function mightConcat(a: string, b?: string) {
-  return b ? a + ' ' + b : a;
+function parseInt(value: string, radix?: number) {
+  // things that don't work the same in every browser 😭
 }
 
 type Name = {
   primary: string;
   surname?: string;
-  other?: string[];
 }
 ```
 
@@ -628,6 +691,8 @@ Likewise, if we were trying to build up a not-so-Western-focused version of a _n
 <!-- .slide: data-transition="slide-in fade-out" -->
 
 ##### “nullable” types: strict null checking
+
+<p class="invisible">*</p>
 
 Turn on `"strictNullChecking": true` in `tsconfig.json`!
 
@@ -645,12 +710,22 @@ Note: We can combine optional declarations with the `"strictNullChecking"` compi
 
 ##### “nullable” types: strict null checking
 
+<p class="invisible">*</p>
+
 Turn on `"strictNullChecking": true` in `tsconfig.json`!
 
 ```ts
 let el: HTMLElement = document.querySelector('some-id');
 el.focus(); // Type error! This could be `null`!
 ```
+
+<blockquote class="fragment" data-fragment-index="1"><p>But `id="some-id"` will always be set!</p></blockquote>
+
+***
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+<!-- .element: class="fragment" data-fragment-index="2" --> Will it? Will *everyone* remember that *forever*?
+
 
 Note: If you’re starting a _new_ Ember app with TypeScript, I’d turn this flag on at the start. If you’re dealing with an existing app... well, that’s probably going to be too hard, but it’s worth aiming to get there eventually!
 
@@ -661,6 +736,8 @@ Note: If you’re starting a _new_ Ember app with TypeScript, I’d turn this fl
 #### Generics
 
 ```ts
+// Array<T>
+
 
 let numbers = [1, 2, 3];
 
@@ -685,6 +762,8 @@ Generics let us capture things like the fact that we can have an array of just a
 #### Generics
 
 ```ts
+// Array<T>
+
 // Array<number>
 let numbers = [1, 2, 3];
 
@@ -707,6 +786,8 @@ Note: You can see in the example here: an array can be an array of all sorts of 
 #### Generics
 
 ```ts
+// Array<T>
+
 // Array<number>
 let numbers = [1, 2, 3];
 
@@ -727,13 +808,15 @@ let things = [
 #### Generics
 
 ```ts
+// Array<T>
+
 // Array<number>
 let numbers = [1, 2, 3];
 
 // Array<string>
 let strings = ['a', 'b', 'c'];
 
-// Array<{thing: number }>
+// Array<{ thing: number }>
 let things = [
   { thing: 1 },
   { thing: 2 },
@@ -744,10 +827,16 @@ let things = [
 
 ### Even snazzier kinds of types
 
+<p class="invisible">*</p>
+
 * enums
+
 * union types
+
 * intersection types
+
 * tuples
+
 * literal types
 
 Note: There are a handful more types you’ll see, and which can be _super_ useful. I’m not going to dig particularly deep into any of these, but I did want to touch on them before we start talking about Ember.js and TypeScript together.
@@ -820,6 +909,20 @@ let hallo: Hallo = {
 type Ok = { ok: true; value: string };
 type Err = { ok: false; reason: string };
 type Validation = Ok | Err;
+```
+
+Note: Union types are literally my favorite thing in TypeScript. They let you say “this thing can be _a_ or _b_.” And that’s a really common scenario! For example, we’ve all probably experienced a time when a given function needs to be able to indicate either success or failure – for example, a validation.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### union types
+
+```ts
+type Ok = { ok: true; value: string };
+type Err = { ok: false; reason: string };
+type Validation = Ok | Err;
 
 function validate(formFields: FormField[]): Validation {
   return formFields.every(field => field.isValid)
@@ -828,9 +931,7 @@ function validate(formFields: FormField[]): Validation {
 }
 ```
 
-Note: Union types are literally my favorite thing in TypeScript. They let you say “this thing can be _a_ or _b_.” And that’s a really common scenario! For example, we’ve all probably experienced a time when a given function needs to be able to indicate either success or failure – for example, a validation.
-
-With union types, we can write that out, and TypeScript will check us: if we try to return `{ ok: false, value: 12 }` or `{ ok: true, reason: "whatever, man, you're not the boss of me" }`, it will complain. Here, it’s leaning on the literal types: the `Ok` type must include _exactly_ `ok: true` and `value: number` _or_ `ok: false` and `reason: string`.
+Note: With union types, we can write that out, and TypeScript will check us: if we try to return `{ ok: false, value: 12 }` or `{ ok: true, reason: "whatever, man, you're not the boss of me" }`, it will complain. Here, it’s leaning on the literal types: the `Ok` type must include _exactly_ `ok: true` and `value: number` _or_ `ok: false` and `reason: string`.
 
 ---
 
@@ -895,11 +996,32 @@ Note: TypeScript also lets use define _tuple_ types. These look a little like ar
 ```ts
 type NameAndAge = [string, number];
 
-// valid!
+// valid! ✅
 let good: NameAndAge = ["Chris Krycho", 30];
 ```
 
 Note: then this would be valid…
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### tuples
+
+```ts
+type NameAndAge = [string, number];
+
+// valid! ✅
+let good: NameAndAge = ["Chris Krycho", 30];
+
+// type errors! ❌
+let bad1: NameAndAge = [30, "Chris Krycho"];
+let bad2: NameAndAge = ["Chris Krycho", 30, { is: 'a nerd' }]
+```
+
+Note: … but these would _not_! because the order is wrong in the first one, and the second has too many values.
+
+These are handy for return types where you need to return more than one things – like in promise chains. If you have more complicated structures, though, you’re usually better returning objects, because names can add a lot of clarity.
 
 ---
 
@@ -910,17 +1032,26 @@ Note: then this would be valid…
 ```ts
 type NameAndAge = [string, number];
 
-// valid!
+// valid! ✅
 let good: NameAndAge = ["Chris Krycho", 30];
 
-// type errors!
+// type errors! ❌
 let bad1: NameAndAge = [30, "Chris Krycho"];
 let bad2: NameAndAge = ["Chris Krycho", 30, { is: 'a nerd' }]
 ```
 
-Note: … but these would _not_! because the order is wrong in the first one, and the second has too many values.
+```ts
+type StrsAndNums = Array<string | number>
 
-These are handy for return types where you need to return more than one things – like in promise chains. If you have more complicated structures, though, you’re usually better returning objects, because names can add a lot of clarity.
+// valid! ✅
+let good1: StrsAndNums = ["Chris Krycho", 30];
+let good2: StrsAndNums = [30, "Chris Krycho", 59, "potato", "wat"];
+
+// type error! ❌
+let bad: StrsAndNums = ["Chris Krycho", 30, { is: 'a nerd' }];
+```
+
+Note: It's worth contrasting these with arrays, where you can have mixed types, but the order is not fixed. Here, there is no set length, and they can come in any order. They just still have to be all the set of types we declared, so you still can't throw in *random* types.
 
 ---
 
@@ -1183,6 +1314,10 @@ Note: You may also have noticed that I didn’t do `.get()` here. That’s becau
 
 #### So which should I use?
 
+<p class="invisible">*</p>
+
+<p class="invisible">*</p>
+
 Mostly, just use `class`-style declarations!
 
 They’re better, _and_ easier to type-check!
@@ -1240,7 +1375,7 @@ Workaround: use decorators!
 import Component from '@ember/component';
 import { tagName } from '@ember-decorators/component';
 
-@tagName('ul')  // 👍 works!
+@tagName('ul')     // 👍 works!
 export default class UserList extends Component {
   items!: User[];
 }
@@ -1274,12 +1409,10 @@ This is a very practical reason to follow what is good advice anyway: avoid deep
 
 ```ts
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 import { assert } from '@ember/debug';
+import { computed } from '@ember/object';
 
 export default class UserProfile extends Component {
-
-
 
 
 
@@ -1287,7 +1420,6 @@ export default class UserProfile extends Component {
   desc = computed('name', function(this: UserProfile): string {
     return `You signed in as ${this.name}.`;
   });
-
 
 
 
@@ -1359,7 +1491,7 @@ import User from 'my-app/models/person';
 
 export default class UserProfile extends Component {
   userId!: number;
-  user: User;
+  user!: User;
 
   store = service('store');
 
