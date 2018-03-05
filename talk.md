@@ -518,11 +518,15 @@ Note: Since TypeScript is all about shapes, how do we write them?
 ##### Writing shapes: `type`
 
 ```ts
-function withGnarly(arg: {
-  a: string[];
-  b: number;
-  c: { some: boolean };
-}): boolean {
+function fetch(
+  url: string | Request,
+  options: {
+    method: string;
+    headers: Header;
+    body: Blob | BufferSource | FormData | URLSearchParams | string;
+    // all the others…
+  }
+): Promise<Response> {
   /* the implementation */
 }
 ```
@@ -536,17 +540,40 @@ Note: A type alias is a way of telling TypeScript “When I use this name, it’
 ##### Writing shapes: `type`
 
 ```ts
-type Arg = {
-  a: string[];
-  b: number;
-  c: { some: boolean };
-};
 
-function withGnarly(arg: Arg): boolean {
+
+
+
+
+
+
+
+
+function withGnarly(url: Url, options: Options): Promise<Response> {
   /* the implementation */
 }
 ```
 
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+##### Writing shapes: `type`
+
+```ts
+type Url = string | Request;
+
+type Options = {
+  method: string;
+  headers: Header;
+  body: Blob | BufferSource | FormData | URLSearchParams | string;
+  // all the others…
+};
+
+function withGnarly(url: Url, options: Options): Promise<Response> {
+  /* the implementation */
+}
+```
 
 ---
 
