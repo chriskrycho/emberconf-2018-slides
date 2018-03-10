@@ -549,7 +549,7 @@ Note: A type alias is a way of telling TypeScript “When I use this name, it’
 
 
 
-function withGnarly(url: Url, options: Options): Promise<Response> {
+function fetch(url: Url, options: Options): Promise<Response> {
   /* the implementation */
 }
 ```
@@ -570,7 +570,7 @@ type Options = {
   // all the others…
 };
 
-function withGnarly(url: Url, options: Options): Promise<Response> {
+function fetch(url: Url, options: Options): Promise<Response> {
   /* the implementation */
 }
 ```
