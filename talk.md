@@ -369,7 +369,7 @@ let myFavoriteNovels: Array<string> = [
 ];
 ```
 
-Note: If we write out the type fully, it could like like either of these. (The first version is basically shorthand for the second version, and we'll talk about what the second version is actually saying later.)
+Note: If we write out the type fully, it could look like either of these. (The first version is basically shorthand for the second version, and we'll talk about what the second version is actually saying later.)
 
 ---
 
