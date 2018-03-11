@@ -188,7 +188,7 @@ Note: Okay, so assuming that combo sounds like a win, _how_ does TypeScript do t
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-#### JavaScript
+#### Basics: JavaScript
 
 <p class="invisible">*</p>
 
@@ -210,7 +210,7 @@ Note: we're starting out here with some extremely basic JavaScript. We'll build 
 
 <!-- .slide: data-transition="fade" -->
 
-#### Let's add types!
+#### Basics: Let's add types!
 
 <p class="invisible">*</p>
 
@@ -235,7 +235,7 @@ Note: So when you’re using these types in your program, you’ll need to write
 
 <!-- .slide: data-transition="fade" -->
 
-##### Let's add types!
+#### Basics: Let's add types!
 
 But we don't actually need almost any of those!
 
@@ -257,11 +257,11 @@ Note: A lot of times, you _won’t_ have to write down types. Anywhere you assig
 
 <!-- .slide: data-transition="fade" -->
 
-##### Comparing them: JavaScript
+#### Basics: direct comparison &ndash; JavaScript
 
 <p class="invisible">*</p>
 
-```ts
+```js
 let myName = "Chris";
 let theAnswer = 42;
 let iThinkEmberIsCool = true;
@@ -279,7 +279,7 @@ Note: So for direct comparison, again: here's the base JavaScript…
 
 <!-- .slide: data-transition="fade-in slide-out" -->
 
-##### Comparing them: TypeScript
+#### Basics: direct comparison &ndash; TypeScript
 
 <p class="invisible">*</p>
 
@@ -297,6 +297,154 @@ let toString = (anything: any) => `${n}`;
 
 Note: And here's the TypeScript.
 
+We'll talk more in a few about type inference, but first let's talk about writing down types for arrays and objects.
+
+---
+
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+#### Arrays
+
+In JavaScript:
+
+```js
+let myFavoriteNovels = [
+  'The Lord of the Rings',
+  'The Brothers Karamazov',
+];
+```
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Arrays
+
+In TypeScript (fully annotated):
+
+```ts
+let myFavoriteNovels: string[] = [
+  'The Lord of the Rings',
+  'The Brothers Karamazov',
+];
+```
+
+Alternative annotation:
+
+```ts
+let myFavoriteNovels: Array<string> = [
+  'The Lord of the Rings',
+  'The Brothers Karamazov',
+];
+```
+
+Note: If we write out the type fully, it could like like either of these. (The first version is basically shorthand for the second version, and we'll talk about what the second version is actually saying later.)
+
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+#### Arrays
+
+In TypeScript:
+
+```ts
+let myFavoriteNovels: string[] = [
+  'The Lord of the Rings',
+  'The Brothers Karamazov',
+];
+```
+
+Note: But again, TypeScript can infer these.
+
+---
+
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+#### Objects
+
+In JavaScript:
+
+```js
+
+
+
+
+
+
+let me = {
+  name: "Chris",
+  age: 30,
+  likesEmber: true,
+};
+```
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Objects
+
+In TypeScript (fully annotated):
+
+```ts
+
+
+let me: {
+  name: string;
+  age: number;
+  likesEmber: boolean;
+} = {
+  name: "Chris",
+  age: 30,
+  likesEmber: true,
+};
+```
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Objects
+
+In TypeScript (giving the type a name):
+
+```ts
+type JavaScripter = {
+  name: string;
+  age: number;
+  likesEmber: boolean;
+}
+
+let me: JavaScripter = {
+  name: "Chris",
+  age: 30,
+  likesEmber: true,
+};
+```
+
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+#### Objects
+
+In TypeScript (if we don't need to name the type):
+
+```ts
+
+
+
+
+
+
+let me = {
+  name: "Chris",
+  age: 30,
+  likesEmber: true,
+};
+```
+
 ---
 
 ##### Type inference
@@ -308,6 +456,8 @@ So let's talk about "type inference."
 What can it do?
 
 What can it *not* do?
+
+Note: Okay, so I've talked a lot about type inference so far. Let's take a step back and talk just a little about what it *can* do and what it *can't* do.
 
 ---
 
@@ -405,46 +555,7 @@ function badStringLength(untypedThing) {
 
 ---
 
-#### TODO
-
-```js
-let myFavoriteNovels = [
-  'The Lord of the Rings',
-  'The Brothers Karamazov',
-];
-
-let me = {
-  name: myName,
-  age: myAge,
-  likesEmber: iThinkEmberIsCool,
-  favoriteNovels: myFavoriteNovels,
-};
-```
-
----
-
-### Type signatures
-
-How do we actually write down these types?
-
-Note: So let’s talk about how we actually write down types to use in TypeScript. That’ll give us the foundation we need for using them in the context of Ember.js specifically.
-
----
-
-#### Basic types
-
-* <!-- .element: class="fragment" --> Primitive types: `boolean`, `string`, `number`, `symbol`
-* <!-- .element: class="fragment" --> Objects: `{ name: string }`
-* <!-- .element: class="fragment" --> Arrays: `Array<number>` or `number[]`
-
-Note: There are four “primitive” types in TypeScript: strings, booleans, numbers, and symbols. There are also _object_ and _array_ types.
-
-* Object types look like object literals, but with _types_ instead of _values_ after the name of the field.
-* Array types can be written two ways: as `Array<{the type, like "number" here}>` or `{the type, like "number" here}` followed by `[]`. We’ll come back to the version with `Array` written out explicitly in a few.
-
----
-
-#### `any`
+#### `any` (TODO)
 
 `any`: the great (and _terrible_) escape hatch.
 
