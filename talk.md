@@ -313,8 +313,7 @@ function stringLength(s: any) {
 stringLength(42);  // 💥 at runtime
 ```
 
-***
-<!-- .element: class="fragment" data-fragment-index="1" -->
+<hr class="fragment" data-fragment-index="1" />
 
 <blockquote class="fragment" data-fragment-index="1">
 <p>"TypeError: undefined is not an object (evaluating 's.length')"</p>
@@ -1149,8 +1148,7 @@ A possible objection:
 
 <blockquote class="fragment" data-fragment-index="1">But I know that `id="some-id"` will always be set!</blockquote>
 
-***
-<!-- .element: class="fragment" data-fragment-index="2" -->
+<hr class="fragment" data-fragment-index="2" />
 
 <!-- .element: class="fragment" data-fragment-index="2" --> Will it? Will *everyone* remember that *forever*?
 
@@ -1914,13 +1912,11 @@ Note: As I commented above, we sometimes have to write down the `this` type for 
 
 Let's take a slight detour, into *type registries*.
 
-***
-<!-- .element: class="fragment" data-fragment-index="1" -->
+<hr class="fragment" data-fragment-index="1" />
 
 <blockquote class="fragment" data-fragment-index="1"><p>These are some kind of arcane type magic!</p></blockquote>
 
-***
-<!-- .element: class="fragment" data-fragment-index="2" -->
+<hr class="fragment" data-fragment-index="2" />
 
 <!-- .element: class="fragment" data-fragment-index="2" -->(Secret: they really aren't.)
 
@@ -2170,11 +2166,9 @@ Note: Most of the same considerations apply with Mirage, and apparently for the 
 
 <p class="invisible">*</p>
 
-<!-- .element: class="fragment" -->_Today_, TypeScript cannot help us with:
+<!-- .element: class="fragment" -->_Today_, TypeScript cannot help us with template bindings of any sort.
 
-* <!-- .element: class="fragment" -->template bindings of any sort
-
-* <!-- .element: class="fragment" -->including action invocation
+<!-- .element: class="fragment" -->Including action invocation. 😢
 
 <!-- .element: class="fragment" -->Maybe someday! 🤷🏽‍♂️
 
