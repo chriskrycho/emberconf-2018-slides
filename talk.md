@@ -2,7 +2,7 @@
 
 ## Session 1: TypeScript Intro
 
-*****
+***
 
 ## Introductions
 
@@ -29,7 +29,7 @@ Cool! That’s really helpful, and we’ll make a point to make sure no one gets
 
 I’ll say this again and again, but I really mean it: if you have a question, if something was confusing, really for any reason at all: stop me, and ask questions. I’ve intentionally left plenty of time for that and everyone in here will learn this better if you _do_ ask.
 
-*****
+***
 
 ## Schedule
 
@@ -68,7 +68,7 @@ $ yarn
 
 Note: If any of you _have not_ cloned the repository and run `yarn` to get everything set up, this first session is a good time to do that in the background. The link on the whiteboard here will take you straight to it. (https://github.com/chriskrycho/emberconf)
 
-*****
+***
 
 <p class="invisible">*</p>
 
@@ -174,7 +174,7 @@ And it’s not painful to use!
 
 Note: Finally, it’s worth note that it’s not _painful to use_ in the way some typed languages have been. If I need to write “This function needs an object with a `quack` method on it that I can call” I can just write that inline, and we’ll see that in a few minutes! The types _cost_ a lot less than they do in the sort of “typical” typed languages out there, which makes their relative value a lot higher, too.
 
-*****
+***
 
 <p class="invisible">*</p>
 
@@ -866,7 +866,7 @@ That might surprise you because from what we've seen so far, `interface` declara
 
 I should note: I’m offering an opinionated take here. This actually runs up against Microsoft’s view a little bit – they basically say to use interfaces for everything and not to use type aliases at all, because things should _always_ be open to being extended. I disagree! I often want to just write down a bunch of small types like LEGO blocks to fit together. But there’s room for different styles here, in any case.
 
-*****
+***
 
 ### Theory break!
 
@@ -1024,7 +1024,7 @@ sayHello(jon); // "Hello, Jon Rossway!
 
 Note: Building on that: _names of types don’t matter_ in TypeScript. When you write a `class` definition, you’re just providing a definition of a shape, and a way to build that shape, all at once. So you can see here a function that takes a `Person`, and a `Person` is defined with a `class` – but TypeScript doesn’t care whether you constructed the shape using a class constructor an object literal. It only cares that you pass it something that matches the _shape_ you defined.
 
-*****
+***
 
 ### Other types
 
@@ -1085,11 +1085,10 @@ Likewise, if we were trying to build up a not-so-Western-focused version of a _n
 
 ##### “nullable” types: strict null checking
 
-<p class="invisible">*</p>
-
 Turn on `"strictNullChecking": true` in `tsconfig.json`!
 
 ```ts
+
 let el: HTMLElement = document.querySelector('#some-id');
 el.focus();
 ```
@@ -1103,16 +1102,15 @@ Note: We can combine optional declarations with the `"strictNullChecking"` compi
 
 ##### “nullable” types: strict null checking
 
-<p class="invisible">*</p>
-
 Turn on `"strictNullChecking": true` in `tsconfig.json`!
 
 ```ts
+// Type error! This could also be `null`!
 let el: HTMLElement = document.querySelector('#some-id');
-el.focus(); // Type error! This could be `null`!
+el.focus();
 ```
 
-Note: If you’re starting a _new_ Ember app with TypeScript, I’d turn this flag on at the start. If you’re dealing with an existing app... well, that’s probably going to be too hard, but it’s worth aiming to get there eventually!
+Note: TypeScript will call us out here. `querySelector` might return `null`, too.
 
 ---
 
@@ -1120,23 +1118,41 @@ Note: If you’re starting a _new_ Ember app with TypeScript, I’d turn this fl
 
 ##### “nullable” types: strict null checking
 
-<p class="invisible">*</p>
-
 Turn on `"strictNullChecking": true` in `tsconfig.json`!
 
 ```ts
+// Type error! This could also be `null`!
 let el: HTMLElement = document.querySelector('#some-id');
-el.focus(); // Type error! This could be `null`!
+el.focus(); // so this could throw an error.
+```
+
+Note: So this could throw an error at runtime!
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### “nullable” types: strict null checking
+
+Handle the error.
+
+```ts
+
+let el: HTMLElement | null = document.querySelector('#some-id');
+if (el) {
+  el.focus();
+}
 ```
 
 A possible objection:
-
- >But I know that `id="some-id"` will always be set!
-
-***
 <!-- .element: class="fragment" data-fragment-index="1" -->
 
-<!-- .element: class="fragment" data-fragment-index="1" --> Will it? Will *everyone* remember that *forever*?
+<blockquote class="fragment" data-fragment-index="1">But I know that `id="some-id"` will always be set!</blockquote>
+
+***
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+<!-- .element: class="fragment" data-fragment-index="2" --> Will it? Will *everyone* remember that *forever*?
 
 Note: Now, one possible objection here is that you *know* that this ID exists. And you might! But one thing TypeScript does is help us scale past what we individually remember *today*. The thing is, you know what invariants you intend for a given part of your app to maintain. *Today*. But someone else who comes along to work on the code might *not* know what you intend. For that matter, you yourself might not remember in six months.
 
@@ -1146,18 +1162,19 @@ Note: Now, one possible objection here is that you *know* that this ID exists. A
 
 ##### “nullable” types: strict null checking
 
-<p class="invisible">*</p>
-
 A workaround:
 
 ```ts
+
 let el: HTMLElement | null = document.querySelector('#some-id');
 if (el === null) throw "The `some-id` selector should always exist.";
 
-el.focus(); // Type error! This could be `null`!
+el.focus();
 ```
 
+Note: This way, you enforce that the invariant holds. If you get past the check, TypeScript will "narrow" the type from `HTMLElement | null` to just `HTMLElement`, and allow you to proceed. In other words, it understands that the check here determines the type really is `HTMLElement`.
 
+If you’re starting a _new_ Ember app with TypeScript, I’d turn this flag on at the start. If you’re dealing with an existing app... well, that’s probably going to be too hard, but it’s worth aiming to get there eventually!
 
 ---
 
@@ -1253,7 +1270,7 @@ let things = [
 ];
 ```
 
-*****
+***
 
 #### Even snazzier kinds of types
 
@@ -1528,7 +1545,7 @@ Note: It's worth contrasting these with arrays, where you can have mixed types, 
 
 Note: Okay, so that’s it for TypeScript itself. We did not cover _everything_ in TypeScript, for sure, but we got through most stuff we’ll need. Any questions so far?
 
-*****
+***
 
 ## TypeScript in Ember.js
 
@@ -1542,7 +1559,7 @@ _(Mostly!)_
 
 Note: Using TypeScript in Ember is _mostly_ just like using it in general, but there are some definite gotchas. These gotchas are for things _as they are_, but in the workshop session I’m going to introduce things _as they are about to be_, which alleviate these a lot!
 
-*****
+***
 
 ### `Ember.Object` (and everything related)
 
@@ -1891,7 +1908,7 @@ export default class UserProfile extends Component {
 
 Note: As I commented above, we sometimes have to write down the `this` type for TypeScript to know what’s going on. You _normally_ won’t have to worry about this, because some of the changes for Ember 3.1 help, and so do decorators. The biggest times we have to use this are with old-style computed properties and old-style `actions` hashes. If we didn’t have `this: UserProfile` here, this wouldn’t be able to check that we’re setting a legitimate value, because the `this` context for actions (which Ember sets for us behind the scenes) wouldn’t be known to TypeScript. In both cases, decorators give us a nicer solution, but you _will_ see this if you’re converting existing code, so it’s worth knowing about.
 
-*****
+***
 
 ### “Type Registries”
 
@@ -2028,7 +2045,7 @@ declare module '@ember/service' {
 
 They just map string keys (`session`)… to types (`Session`).
 
-*****
+***
 
 ### Exceptions and Workarounds
 
@@ -2145,7 +2162,7 @@ Note: Most of the same considerations apply with Mirage, and apparently for the 
 
 <!-- .element: class="fragment" -->(Double secret: It’ll come with a quest issue to _type the whole ecosystem_.)
 
-*****
+***
 
 ### Limitations: templates and actions
 
