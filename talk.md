@@ -598,6 +598,84 @@ function badStringLength(untypedThing) {
 
 ---
 
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+### Type errors
+
+<p class="invisible">*</p>
+
+Sometimes we get things wrong. 😭
+
+```ts
+let foo: number = 'wat';
+```
+
+Note: now, something I've kind of taken for granted so far is the idea of a *type error*. And you've all seen type errors at runtime, but the difference is that these happen at build time, and in fact they'll get highlighted in our editors if we have TypeScript integration.
+
+---
+
+### Type errors
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+<p class="invisible">*</p>
+
+Sometimes we get things wrong. 😭
+
+```ts
+let foo: number = 'wat'; // cannot assign string to number
+```
+
+But TypeScript has our back. 😅
+
+Note: So for the very simplest example, if we write this, TypeScript will give us a type error!
+
+That's not super helpful here, and of course we'd just let it get inferred here. But in the real world it can help a lot.
+
+---
+
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+#### Type errors: more real-world
+
+<p class="invisible">*</p>
+
+```ts
+import { find } from '@ember/test-helpers';
+
+function checkUserId(id: number) {
+
+  if (!find(id)) {
+    throw 'you did not set up the id';
+  }
+}
+```
+
+Note: But it *is* really helpful when we, say, try to pass the wrong argument to a function! For example, it's not obvious reading this code that this will break. But it will!
+
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+#### Type errors: more real-world
+
+<p class="invisible">*</p>
+
+```ts
+import { find } from '@ember/test-helpers';
+
+function checkUserId(id: number) {
+  // TYPE ERROR: `find` requires a `string` or `Node`
+  if (!find(id)) {
+    throw 'you did not set up the id';
+  }
+}
+```
+
+Note: The `find` function takes a `string` or a `Node`. If you pass it a number, or some other more complicated object, it'll break. But TypeScript will let you know before you ever try to run the test that uses this "Hey, this requires a string or a Node; you can't use a number here!"
+
+---
+
 #### Writing shapes
 
 Since TS is all about shapes, let’s write some!
