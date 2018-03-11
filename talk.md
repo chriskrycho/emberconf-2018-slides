@@ -180,7 +180,7 @@ Note: Finally, it’s worth note that it’s not _painful to use_ in the way som
 
 <p class="invisible">*</p>
 
-### Cool, so how do I use it?
+### …so how do I use it?
 
 Note: Okay, so assuming that combo sounds like a win, _how_ does TypeScript do that, and especially in the context of an Ember.js app? To understand that, we need to spend the next few minutes getting a decent handle on TypeScript itself.
 
@@ -297,27 +297,27 @@ let toString = (anything: any) => `${n}`;
 
 Note: And here's the TypeScript.
 
-We'll talk more in a few about type inference, but first let's talk about writing down types for arrays and objects.
+We'll talk more in a few about type inference, but first we need to take a detour to talk about this `any` type herein the `toString` arrow function.
 
 ---
 
-#### `any` (TODO)
+#### `any`
 
 `any`: the great (and _terrible_) escape hatch.
 
 ```ts
-function madWithPower(noLimits: any) {
-    return noLimits.noHelpEither.ohNo;
+function stringLength(s: any) {
+    return s.length;
 }
 
-madWithPower("just a string");  // 💥 at runtime
+stringLength(42);  // 💥 at runtime
 ```
 
 ***
 <!-- .element: class="fragment" data-fragment-index="1" -->
 
 <blockquote class="fragment" data-fragment-index="1">
-<p>"TypeError: undefined is not an object (evaluating 'noLimits.noHelpEither.ohNo')"</p>
+<p>"TypeError: undefined is not an object (evaluating 's.length')"</p>
 </blockquote>
 
 Note: TypeScript gives us an escape hatch, and I’ll tell you about it up front because it’s a useful tool while you’re converting your codebase, and for _rare_ occasions after that. But it’s also _dangerous_.
@@ -338,8 +338,11 @@ In JavaScript:
 let myFavoriteNovels = [
   'The Lord of the Rings',
   'The Brothers Karamazov',
+  'The Book of the Dun Cow',
 ];
 ```
+
+Note: Okay, now let's talk about arrays and objects! We'll start by looking at arrays. Here we have an array of strings including some of my favorite novels of all time.
 
 ---
 
@@ -353,6 +356,7 @@ In TypeScript (fully annotated):
 let myFavoriteNovels: string[] = [
   'The Lord of the Rings',
   'The Brothers Karamazov',
+  'The Book of the Dun Cow',
 ];
 ```
 
@@ -362,6 +366,7 @@ Alternative annotation:
 let myFavoriteNovels: Array<string> = [
   'The Lord of the Rings',
   'The Brothers Karamazov',
+  'The Book of the Dun Cow',
 ];
 ```
 
@@ -376,13 +381,14 @@ Note: If we write out the type fully, it could like like either of these. (The f
 In TypeScript:
 
 ```ts
-let myFavoriteNovels: string[] = [
+let myFavoriteNovels = [
   'The Lord of the Rings',
   'The Brothers Karamazov',
+  'The Book of the Dun Cow',
 ];
 ```
 
-Note: But again, TypeScript can infer these.
+Note: But again, TypeScript can infer the type of an array. (And as we'll see later, that's even true if the array has different types included in it!)
 
 ---
 
@@ -405,6 +411,8 @@ let me = {
   likesEmber: true,
 };
 ```
+
+Note: Now let's talk a bit about object types! Here's a simple object in JavaScript.
 
 ---
 
@@ -428,6 +436,8 @@ let me: {
 };
 ```
 
+Note: if we write out the type inline like we have been so far with other types, it looks like this.
+
 ---
 
 <!-- .slide: data-transition="fade" -->
@@ -450,6 +460,10 @@ let me: JavaScripter = {
 };
 ```
 
+Note: Obviously this is pretty hard to follow, so TypeScript lets us extract that into a named type. Here, we'll say "This is what a JavaScripter looks like: someone with a name, an age, and a boolean to say whether they like Ember.js or not."
+
+The big thing to notice here is the way that the type looks a lot like the way you write an instance of the type. Instead of putting the *value* associated with the key, though, you put the *type* there. So instead of `name: "Chris"`, we have `name: string` in the type definition.
+
 ---
 
 <!-- .slide: data-transition="fade-in slide-out" -->
@@ -471,6 +485,8 @@ let me = {
   likesEmber: true,
 };
 ```
+
+Note: and of course, if we didn't write need that name to be used anywhere else, we could just write it out like this: TypeScript will *infer* that the type of the `name` field is `string`, and so on.
 
 ---
 
