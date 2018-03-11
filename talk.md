@@ -301,6 +301,33 @@ We'll talk more in a few about type inference, but first let's talk about writin
 
 ---
 
+#### `any` (TODO)
+
+`any`: the great (and _terrible_) escape hatch.
+
+```ts
+function madWithPower(noLimits: any) {
+    return noLimits.noHelpEither.ohNo;
+}
+
+madWithPower("just a string");  // 💥 at runtime
+```
+
+***
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+<blockquote class="fragment" data-fragment-index="1">
+<p>"TypeError: undefined is not an object (evaluating 'noLimits.noHelpEither.ohNo')"</p>
+</blockquote>
+
+Note: TypeScript gives us an escape hatch, and I’ll tell you about it up front because it’s a useful tool while you’re converting your codebase, and for _rare_ occasions after that. But it’s also _dangerous_.
+
+The `any` type is exactly what it sounds like. You’re telling TypeScript, “This can be anything, and don’t check me on _anything_ I do with it.” When you’re first converting an existing codebase, sometimes you _have_ to use this because it would be far too painful and too time-consuming to figure out every single type related to a given module as you go. We’ll see that in a few when we actually start converting some JavaScript over to TypeScript.
+
+But it also means TypeScript _cannot help you_ with anything marked as being of the type `any`. No autocompletion. No type errors. Nothing. `any` is an escape hatch, but once you _do_ get your types written down, you should use it as a tool of last resort and be _very_ careful with runtime checks when you do bust it out.
+
+---
+
 <!-- .slide: data-transition="slide-in fade-out" -->
 
 #### Arrays
@@ -552,33 +579,6 @@ function badStringLength(untypedThing) {
   return untypedThing.length;
 }
 ```
-
----
-
-#### `any` (TODO)
-
-`any`: the great (and _terrible_) escape hatch.
-
-```ts
-function madWithPower(noLimits: any) {
-    return noLimits.noHelpEither.ohNo;
-}
-
-madWithPower("just a string");  // 💥 at runtime
-```
-
-***
-<!-- .element: class="fragment" data-fragment-index="1" -->
-
-<blockquote class="fragment" data-fragment-index="1">
-<p>"TypeError: undefined is not an object (evaluating 'noLimits.noHelpEither.ohNo')"</p>
-</blockquote>
-
-Note: TypeScript gives us an escape hatch, and I’ll tell you about it up front because it’s a useful tool while you’re converting your codebase, and for _rare_ occasions after that. But it’s also _dangerous_.
-
-The `any` type is exactly what it sounds like. You’re telling TypeScript, “This can be anything, and don’t check me on _anything_ I do with it.” When you’re first converting an existing codebase, sometimes you _have_ to use this because it would be far too painful and too time-consuming to figure out every single type related to a given module as you go. We’ll see that in a few when we actually start converting some JavaScript over to TypeScript.
-
-But it also means TypeScript _cannot help you_ with anything marked as being of the type `any`. No autocompletion. No type errors. Nothing. `any` is an escape hatch, but once you _do_ get your types written down, you should use it as a tool of last resort and be _very_ careful with runtime checks when you do bust it out.
 
 ---
 
@@ -1054,7 +1054,7 @@ let things = [
 
 *****
 
-### Even snazzier kinds of types
+#### Even snazzier kinds of types
 
 <p class="invisible">*</p>
 
@@ -1072,7 +1072,7 @@ Note: There are a handful more types you’ll see, and which can be _super_ usef
 
 ---
 
-#### `enum`
+##### `enum`
 
 ```ts
 enum PrimaryColor {
@@ -1094,7 +1094,7 @@ Note: A TypeScript `enum` is _basically_ just a convenient way to define an obje
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-#### literal types
+##### literal types
 
 ```ts
 type Hallo = {
@@ -1115,7 +1115,7 @@ We’ll see a handy example of how we can use this in the _next_ kind of type: u
 
 <!-- .slide: data-transition="fade-in slide-out" -->
 
-#### literal types
+##### literal types
 
 ```ts
 type Hallo = {
@@ -1132,7 +1132,7 @@ let hallo: Hallo = {
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-#### union types
+##### union types
 
 ```ts
 type Ok = { ok: true; value: string };
@@ -1146,7 +1146,7 @@ Note: Union types are literally my favorite thing in TypeScript. They let you sa
 
 <!-- .slide: data-transition="fade" -->
 
-#### union types
+##### union types
 
 ```ts
 type Ok = { ok: true; value: string };
@@ -1166,7 +1166,7 @@ Note: With union types, we can write that out, and TypeScript will check us: if 
 
 <!-- .slide: data-transition="fade-in slide-out" -->
 
-#### union types
+##### union types
 
 ```ts
 type Ok = { ok: true; value: string };
@@ -1191,7 +1191,7 @@ Note: What’s also neat is that once you return one of these, TypeScript can fi
 
 ---
 
-#### intersection types
+##### intersection types
 
 ```ts
 type HasName = { name: string };
@@ -1208,7 +1208,7 @@ Note: An _intersection_ type is the counterpart to a _union_ type. Instead of sa
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-#### tuples
+##### tuples
 
 ```ts
 type NameAndAge = [string, number];
@@ -1220,7 +1220,7 @@ Note: TypeScript also lets use define _tuple_ types. These look a little like ar
 
 <!-- .slide: data-transition="fade" -->
 
-#### tuples
+##### tuples
 
 ```ts
 type NameAndAge = [string, number];
@@ -1235,7 +1235,7 @@ Note: then this would be valid…
 
 <!-- .slide: data-transition="fade" -->
 
-#### tuples
+##### tuples
 
 ```ts
 type NameAndAge = [string, number];
