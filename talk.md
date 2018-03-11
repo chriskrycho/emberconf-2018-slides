@@ -6,7 +6,7 @@
 
 ## Introductions
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 * Chris Krycho
 
@@ -55,11 +55,11 @@ Note: Before we jump in, let’s talk through the basic approach I’m planning 
 
 ## Just in case...
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <https://github.com/chriskrycho/emberconf>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```
 $ git clone https://github.com/chriskrycho/emberconf
@@ -70,11 +70,11 @@ Note: If any of you _have not_ cloned the repository and run `yarn` to get every
 
 ***
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ## TypeScript Basics
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 So let’s dive right in! Let’s talk about TypeScript!
 
@@ -82,7 +82,7 @@ So let’s dive right in! Let’s talk about TypeScript!
 
 ### What _is_ TypeScript?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 * _Basically_ a typed superset of JavaScript
 
@@ -98,7 +98,7 @@ Note: TypeScript is _basically_ a typed superset of JavaScript. I say _basically
 
 #### Cool, but why should I care?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Three big developer experience differences:
 
@@ -110,13 +110,13 @@ Note: So that’s all well and good, but _why should you care?_ Maybe that’s i
 
 #### Cool, but why should I care?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Three big developer experience differences:
 
 1. Always-up-to-date documentation for functions and classes
 
-    <p class="invisible">*</p>
+    <p class="invisible">&nbsp;</p>
 
 Note: First: How many of you here like having docs for your functions? Now, how many of you would like it if those docs were always _right_ and _up to date_? Well, the first thing about TypeScript is that that’s exactly what it gives you. My experience of using TypeScript is _not_, for the most part, the way I’ve felt in some other programming languages, where I’m writing down names of things just because. It’s more like just documenting “for this function to work _at all_, it needs you to pass in a thing that has _this property_ on it”—and then finding out _in my editor_ if I passed in the wrong thing, or if my function doesn’t return what the docs say it does. So that’s handy.
 
@@ -126,7 +126,7 @@ Note: First: How many of you here like having docs for your functions? Now, how 
 
 #### Cool, but why should I care?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Three big developer experience differences:
 
@@ -142,7 +142,7 @@ Note: The second thing that makes TypeScript _really great_ is that it legitimat
 
 #### Cool, but why should I care?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Three big developer experience differences:
 
@@ -160,7 +160,7 @@ Note: Third, refactoring is way, *way* easier once your app is fully typed. And 
 
 #### Cool, but why should I care?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Three big developer experience differences:
 
@@ -176,9 +176,9 @@ Note: Finally, it’s worth note that it’s not _painful to use_ in the way som
 
 ***
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ### …so how do I use it?
 
@@ -190,7 +190,7 @@ Note: Okay, so assuming that combo sounds like a win, _how_ does TypeScript do t
 
 #### Basics: JavaScript
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```js
 let myName = "Chris Krycho";
@@ -212,7 +212,7 @@ Note: we're starting out here with some extremely basic JavaScript. We'll build 
 
 #### Basics: Let's add types!
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```ts
 let myName: string = "Chris Krycho";
@@ -259,7 +259,7 @@ Note: A lot of times, you _won’t_ have to write down types. Anywhere you assig
 
 #### Basics: direct comparison &ndash; JavaScript
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```js
 let myName = "Chris";
@@ -281,7 +281,7 @@ Note: So for direct comparison, again: here's the base JavaScript…
 
 #### Basics: direct comparison &ndash; TypeScript
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```ts
 let myName = "Chris";
@@ -493,7 +493,7 @@ Note: and of course, if we didn't write need that name to be used anywhere else,
 
 So let's talk about "type inference."
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 What can it do?
 
@@ -601,7 +601,7 @@ function badStringLength(untypedThing) {
 
 ### Type errors
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Sometimes we get things wrong. 😭
 
@@ -617,7 +617,7 @@ Note: now, something I've kind of taken for granted so far is the idea of a *typ
 
 <!-- .slide: data-transition="fade-in slide-out" -->
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Sometimes we get things wrong. 😭
 
@@ -637,7 +637,7 @@ That's not super helpful here, and of course we'd just let it get inferred here.
 
 #### Type errors: more real-world
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```ts
 import { find } from '@ember/test-helpers';
@@ -658,7 +658,7 @@ Note: But it *is* really helpful when we, say, try to pass the wrong argument to
 
 #### Type errors: more real-world
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```ts
 import { find } from '@ember/test-helpers';
@@ -677,7 +677,7 @@ Note: The `find` function takes a `string` or a `Node`. If you pass it a number,
 
 #### Making our own types
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 We have three tools:
 
@@ -808,7 +808,7 @@ There's one other important thing to say about TypeScript classes, but we'll com
 
 ##### Making our own types: `extends` and `implements`
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 An example:
 
@@ -831,13 +831,13 @@ Meanwhile `extends` works just like it does in normal JavaScript: you attach to 
 
 ##### Making our own types: `extends` and `implements`
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Interfaces:<!-- .element: class="fragment" data-fragment-index="1" -->
 
 - <!-- .element: class="fragment" data-fragment-index="1" --> `extends` gets the parent's *shape*
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Classes:<!-- .element: class="fragment" data-fragment-index="2" -->
 
@@ -853,7 +853,7 @@ Note: So to review:
 
 ##### Making our own types: when to use each
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 * <!-- .element: class="fragment" --> `type` as the default
 * <!-- .element: class="fragment" --> `interface` for defining shapes for more than one `class` to conform to
@@ -869,9 +869,9 @@ I should note: I’m offering an opinionated take here. This actually runs up ag
 
 ### Theory break!
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 > Why does he keep saying "shapes" all the time?
 > —you, roughly right now
@@ -882,16 +882,16 @@ Note: Now, I keep using the word "shape" here and some of you are probably wonde
 
 #### Structural typing
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 TypeScript has a _structural_ type system.
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 * Not like C++, Java, C♯, or even F♯
 * More like Elm, parts of OCaml, parts of Go
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <!-- .element: class="fragment" data-fragment-index="1" --> (Don’t panic!)
 
@@ -907,7 +907,7 @@ But don't panic! It's okay if you don't have any experience with any of those!
 
 #### Structural typing: _Types are just shapes._
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <img
   src="/img/square-peg-round-hole.gif"
@@ -1027,11 +1027,11 @@ Note: Building on that: _names of types don’t matter_ in TypeScript. When you 
 
 ### Other types
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Okay, back into type signatures!
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 - nullable/optional types
 
@@ -1045,7 +1045,7 @@ Note: Okay, that gives us a good idea of the *theory* we need to know to underst
 
 #### “nullable” types: getting a handle on `null` and `undefined`!
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 * the “optional” annotation
 
@@ -1059,7 +1059,7 @@ TypeScript gives us two tools we can combine to help us fix this problem: _optio
 
 ##### “nullable” types: the “optional” annotation
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 ```ts
 function parseInt(value: string, radix?: number) {
@@ -1272,7 +1272,7 @@ let things = [
 
 #### Even snazzier kinds of types
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 * enums
 
@@ -1424,17 +1424,17 @@ Note: An _intersection_ type is the counterpart to a _union_ type. Instead of sa
 
 ##### Aside: on types and interfaces
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <!-- .element: class="fragment" -->Union and intersection types: `type`’s secret sauce.
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <!-- .element: class="fragment" -->`interface` cannot do `|` or `&` types
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <!-- .element: class="fragment" -->Also better for the super-powered types that power our Ember types, etc.
 
@@ -1533,9 +1533,9 @@ Note: It's worth contrasting these with arrays, where you can have mixed types, 
 
 ## TypeScript Basics
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 …actually, that's it!
 
@@ -1547,9 +1547,9 @@ Note: Okay, so that’s it for TypeScript itself. We did not cover _everything_ 
 
 ## TypeScript in Ember.js
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 This is mostly just TypeScript!
 
@@ -1790,9 +1790,9 @@ Note: You may also have noticed that I didn’t do `.get()` here. That’s becau
 
 #### So which should I use?
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Mostly, just use `class`-style declarations!
 
@@ -2045,13 +2045,13 @@ They just map string keys (`session`)… to types (`Session`).
 
 ### Exceptions and Workarounds
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 Some things don’t work perfectly, of course. 🤕
 
@@ -2148,9 +2148,9 @@ Note: Most of the same considerations apply with Mirage, and apparently for the 
 
 ##### Ember CLI Mirage – Registries
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <!-- .element: class="fragment" -->To make Ember CLI Mirage ergonomic in TypeScript, we need a type registry!
 
@@ -2162,9 +2162,9 @@ Note: Most of the same considerations apply with Mirage, and apparently for the 
 
 ### Limitations: templates and actions
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
-<p class="invisible">*</p>
+<p class="invisible">&nbsp;</p>
 
 <!-- .element: class="fragment" -->_Today_, TypeScript cannot help us with template bindings of any sort.
 
