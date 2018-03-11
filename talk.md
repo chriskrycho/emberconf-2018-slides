@@ -2166,7 +2166,7 @@ Note: Most of the same considerations apply with Mirage, and apparently for the 
 
 <p class="invisible">&nbsp;</p>
 
-<!-- .element: class="fragment" -->_Today_, TypeScript cannot help us with template bindings of any sort.
+<!-- .element: class="fragment" -->Today, TypeScript cannot help us with template bindings of any sort.
 
 <!-- .element: class="fragment" -->Including action invocation. 😢
 
