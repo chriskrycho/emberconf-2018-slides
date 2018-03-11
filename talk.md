@@ -12,6 +12,8 @@
 
 * Bill Pullen
 
+* Jon Rossway
+
 Note: Hello, everyone, and welcome to the TypeScript Up Your Ember.js App workshop. I figured I’d start by introducing myself briefly and having my TA Bill introduce himself.
 
 I’m a software engineer at Olo—we do white-label online ordering for restaurants. Our mobile web experience is an Ember.js application with about 20,000 lines of TypeScript. Right now, we are turning that mobile foundation into a responsive, progressive web application that will be _the_ white-label ordering experience at Olo. I’m also one of the maintainers of ember-cli-typescript, and an all-around nerd! We’ve been using TypeScript in our Ember app at Olo since late 2016—_well_ before it was easy or especially useful. But, happily, we’re now at a point where it’s both easy _and_ useful!
@@ -53,7 +55,11 @@ Note: Before we jump in, let’s talk through the basic approach I’m planning 
 
 ## Just in case...
 
+<p class="invisible">*</p>
+
 <https://github.com/chriskrycho/emberconf>
+
+<p class="invisible">*</p>
 
 ```
 $ git clone https://github.com/chriskrycho/emberconf
@@ -64,7 +70,11 @@ Note: If any of you _have not_ cloned the repository and run `yarn` to get every
 
 *****
 
+<p class="invisible">*</p>
+
 ## TypeScript Basics
+
+<p class="invisible">*</p>
 
 So let’s dive right in! Let’s talk about TypeScript!
 
@@ -92,13 +102,23 @@ Note: TypeScript is _basically_ a typed superset of JavaScript. I say _basically
 
 Three big developer experience differences:
 
-1. <!-- .element: class="fragment" --> Always-up-to-date documentation for functions and classes
+Note: So that’s all well and good, but _why should you care?_ Maybe that’s interesting if you’re (like me) kind of weirdly obsessed with type systems. But what does it gain you as JavaScript developer every day? How does it make your life easier?
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Cool, but why should I care?
+
+<p class="invisible">*</p>
+
+Three big developer experience differences:
+
+1. Always-up-to-date documentation for functions and classes
 
     <p class="invisible">*</p>
 
-Note: So that’s all well and good, but _why should you care?_ Maybe that’s interesting if you’re (like me) kind of weirdly obsessed with type systems. But what does it gain you as JavaScript developer every day? How does it make your life easier?
-
-First: How many of you here like having docs for your functions? Now, how many of you would like it if those docs were always _right_ and _up to date_? Well, the first thing about TypeScript is that that’s exactly what it gives you. My experience of using TypeScript is _not_, for the most part, the way I’ve felt in some other programming languages, where I’m writing down names of things just because. It’s more like just documenting “for this function to work _at all_, it needs you to pass in a thing that has _this property_ on it”—and then finding out _in my editor_ if I passed in the wrong thing, or if my function doesn’t return what the docs say it does. So that’s handy.
+Note: First: How many of you here like having docs for your functions? Now, how many of you would like it if those docs were always _right_ and _up to date_? Well, the first thing about TypeScript is that that’s exactly what it gives you. My experience of using TypeScript is _not_, for the most part, the way I’ve felt in some other programming languages, where I’m writing down names of things just because. It’s more like just documenting “for this function to work _at all_, it needs you to pass in a thing that has _this property_ on it”—and then finding out _in my editor_ if I passed in the wrong thing, or if my function doesn’t return what the docs say it does. So that’s handy.
 
 ---
 
@@ -154,7 +174,7 @@ And it’s not painful to use!
 
 Note: Finally, it’s worth note that it’s not _painful to use_ in the way some typed languages have been. If I need to write “This function needs an object with a `quack` method on it that I can call” I can just write that inline, and we’ll see that in a few minutes! The types _cost_ a lot less than they do in the sort of “typical” typed languages out there, which makes their relative value a lot higher, too.
 
----
+*****
 
 <p class="invisible">*</p>
 
@@ -166,126 +186,242 @@ Note: Okay, so assuming that combo sounds like a win, _how_ does TypeScript do t
 
 ---
 
-#### Structural typing
+<!-- .slide: data-transition="slide-in fade-out" -->
 
-TypeScript has a _structural_ type system.
+#### JavaScript
 
-* Not like C++, Java, C♯
-* More like OCaml/Reason, F♯, Elm
+<p class="invisible">*</p>
 
-(Don’t panic! It’s okay if you don’t have experience with _any_ of those.)
+```js
+let myName = "Chris Krycho";
+let myAge = 30;
+let iThinkEmberIsCool = true;
 
-Note: TypeScript is _not_ like the type systems most people have experience with from C++, Java, C♯, etc. It _is_ like the type systems of OCaml (including Reason), F♯, Elm, Haskell, etc. but most people’s idea of a type system comes from Java or C♯, and the differences can be very surprising.
+function stringLength(s) {
+  return s.length;
+}
+
+let toString = (anything) => `${anything};
+```
+
+Note: we're starting out here with some extremely basic JavaScript. We'll build up as we go.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Let's add types!
+
+<p class="invisible">*</p>
+
+```ts
+let myName: string = "Chris Krycho";
+let myAge: number = 30;
+let iThinkEmberIsCool: boolean = true;
+
+function stringLength(s: string): number {
+    return s.length;
+}
+
+let toString = (anything: any): string => `${anything};
+```
+
+Note: So when you’re using these types in your program, you’ll need to write down some types! Here are some types of things you might want to know how to write down:
+
+* the primitive types
+* functions
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### Let's add types!
+
+But we don't actually need almost any of those!
+
+```ts
+let myName = "Chris";
+let theAnswer = 42;
+let iThinkEmberIsCool = true;
+
+function stringLength(s: string) {
+    return s.length;
+}
+
+let toString = (anything: any) => `${n}`;
+```
+
+Note: A lot of times, you _won’t_ have to write down types. Anywhere you assign a value, TypeScript _infers_ the type for you. Similarly, TypeScript will figure out function return types for you.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### Comparing them: JavaScript
+
+<p class="invisible">*</p>
+
+```ts
+let myName = "Chris";
+let theAnswer = 42;
+let iThinkEmberIsCool = true;
+
+function stringLength(s) {
+    return s.length;
+}
+
+let toString = (anything) => `${n}`;
+```
+
+Note: So for direct comparison, again: here's the base JavaScript…
+
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+##### Comparing them: TypeScript
+
+<p class="invisible">*</p>
+
+```ts
+let myName = "Chris";
+let theAnswer = 42;
+let iThinkEmberIsCool = true;
+
+function stringLength(s: string) {
+    return s.length;
+}
+
+let toString = (anything: any) => `${n}`;
+```
+
+Note: And here's the TypeScript.
+
+---
+
+##### Type inference
+
+So let's talk about "type inference."
+
+<p class="invisible">*</p>
+
+What can it do?
+
+What can it *not* do?
 
 ---
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-##### Structural typing: _Types are just shapes._
+###### Type inference: quite sophisticated
 
 ```ts
-interface Person {
-  name: string;
+
+function getUserDOM(userName: string) {
+  return document.querySelector(`#${userName}`);
+}
+
+
+
+
+let userDOM = getUserDOM('chris');
+console.log(result.innerText);
+```
+
+Note: TypeScript can infer a _lot_. It’ll even infer more interesting types we haven’t talked about yet, like _union_ types. Here, TypeScript knows that we’re returning _either_ a string or an object with a key named “say” which has a string value. And when we go to use it, we’ll have to check what the type is, or TS will yell at us.
+
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+###### Type inference: quite sophisticated
+
+```ts
+// returns `Element | null`
+function getUserDOM(userName: string) {
+  return document.querySelector(`#${userName}`);
+}
+
+// Type error! We haven't checked whether `result` is a string or a
+// number, so TS will tell us we need to figure that out before we
+// try to do something with it.
+let userDOM = getUserDOM('chris');
+console.log(result.textContent);
+```
+
+---
+
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+###### Type inference: limits
+
+```ts
+let whatEvenAreTheseGoingToBe = []; 
+
+function badStringLength(untypedThing) {
+  
+  
+  return untypedThing.length;
 }
 ```
 
-Note: In a structural type system, types are _just shapes_. Anything with that shape can be used wherever the shape is required. So in this example, we have a `Person` shape – we’ll talk more about using `interface` to define shapes later.
+Note: But it can’t infer _everything_. For example, if you create an empty array, you’ll need to tell it what _kind_ of array, or it’ll fall back to the `any` type.
+
+You also have to write function _argument_ types explicitly pretty much all the time; TS doesn’t try to do total program inference like some other languages do.
+
+Finally, when using _generic types_, which we’ll talk about in a minute, it will eventually fall over even when _you_ can see that there’s only a single type it could be. In that case, you _do_ have to write things out explicitly.
 
 ---
 
 <!-- .slide: data-transition="fade" -->
 
-##### Structural typing: _Types are just shapes._
+###### Type inference: limits
 
 ```ts
-interface Person {
-  name: string;
-}
+let whatEvenAreTheseGoingToBe = []; // has type `any[]`
 
-function sayHello(p: Person) {
-  console.log(`Hello, ${p.name}!`);
+function badStringLength(untypedThing) {
+  
+  
+  return untypedThing.length;
 }
 ```
 
-Note: Then we can define a function which takes a `Person`.
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+###### Type inference: limits
+
+```ts
+let whatEvenAreTheseGoingToBe = []; // has type `any[]`
+
+function badStringLength(untypedThing) {
+  // Type error! We don't know that `untypedThing` *has*
+  // a `length` property! It's actually `any` here.
+  return untypedThing.length;
+}
+```
 
 ---
 
-<!-- .slide: data-transition="fade" -->
+#### TODO
 
-##### Structural typing: _Types are just shapes._
+```js
+let myFavoriteNovels = [
+  'The Lord of the Rings',
+  'The Brothers Karamazov',
+];
 
-```ts
-interface Person {
-  name: string;
-}
-
-function sayHello(p: Person) {
-  console.log(`Hello, ${p.name}!`);
-}
-
-const person = {
-  name: 'Chris Krycho',
-  favoriteHobby: 'running',
+let me = {
+  name: myName,
+  age: myAge,
+  likesEmber: iThinkEmberIsCool,
+  favoriteNovels: myFavoriteNovels,
 };
 ```
 
-Note: Then we can create an object which _doesn’t_ explicitly call itself a `Person` but which _does_ match the shape.
-
 ---
-
-<!-- .slide: data-transition="fade" -->
-
-##### Structural typing: _Types are just shapes._
-
-```ts
-interface Person {
-  name: string;
-}
-
-function sayHello(p: Person) {
-  console.log(`Hello, ${p.name}!`);
-}
-
-const person = {
-  name: 'Chris Krycho',
-  favoriteHobby: 'running',
-};
-
-sayHello(person);
-```
-
-Note: But we can use that with the `sayHello` function, because it has the right shape – even though it has _more_ properties than needed, and even though it doesn’t have the _name_ that we used to define that shape.
-
-Again: shapes are the only thing TypeScript cares about! And this is a huge difference from C++ or Java or C♯, which all care whether the _name_ of the thing you’re using matches.
-
----
-
-##### Structural typing: `class`
-
-A `class` is just a way to _define_ and _construct_ a shape.
-
-```ts
-class Person {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-function sayHello(p: Person) {
-  console.log(`Hello, ${p.name}!`);
-}
-
-const bill = { name: "Bill Pullen", employer: "Olo" };
-sayHello(bill); // "Hello, Bill Pullen!
-```
-<!-- .element: class="fragment" -->
-
-Note: Building on that: _names of types don’t matter_ in TypeScript. When you write a `class` definition, you’re just providing a definition of a shape, and a way to build that shape, all at once. So you can see here a function that takes a `Person`, and a `Person` is defined with a `class` – but TypeScript doesn’t care whether you constructed the shape using a class constructor an object literal. It only cares that you pass it something that matches the _shape_ you defined.
-
-*****
 
 ### Type signatures
 
@@ -332,172 +468,6 @@ Note: TypeScript gives us an escape hatch, and I’ll tell you about it up front
 The `any` type is exactly what it sounds like. You’re telling TypeScript, “This can be anything, and don’t check me on _anything_ I do with it.” When you’re first converting an existing codebase, sometimes you _have_ to use this because it would be far too painful and too time-consuming to figure out every single type related to a given module as you go. We’ll see that in a few when we actually start converting some JavaScript over to TypeScript.
 
 But it also means TypeScript _cannot help you_ with anything marked as being of the type `any`. No autocompletion. No type errors. Nothing. `any` is an escape hatch, but once you _do_ get your types written down, you should use it as a tool of last resort and be _very_ careful with runtime checks when you do bust it out.
-
----
-
-<!-- .slide: data-transition="slide-in fade-out" -->
-
-#### Type ascriptions
-
-Let’s write some basic types!
-
-```ts
-let myName: string = "Chris";
-let theAnswer: number = 42;
-let aLie: boolean = false;
-
-function stringLength(s: string): number {
-    return s.length;
-}
-
-let toString = (n: any): string => `${n}`;
-```
-
-Note: So when you’re using these types in your program, you’ll need to write down some types! Here are some types of things you might want to know how to write down:
-
-* the primitive types
-* functions
-
----
-
-<!-- .slide: data-transition="fade" -->
-
-##### Type inference
-
-Most of those we didn’t actually need!
-
-```ts
-let myName = "Chris";
-let theAnswer = 42;
-let aLie = false;
-
-function stringLength(s: string) {
-    return s.length;
-}
-
-let toString = (n: any) => `${n}`;
-```
-
-Note: A lot of times, you _won’t_ have to write down types. Anywhere you assign a value, TypeScript _infers_ the type for you. Similarly, TypeScript will figure out function return types for you.
-
----
-
-<!-- .slide: data-transition="fade-in slide-out" -->
-
-##### Type inference
-
-Most of those we didn’t actually need!
-
-```ts
-let myName = "Chris";  // automatically `string`
-let theAnswer = 42;  // automatically `number`
-let aLie = false;  // automatically `boolean`
-
-function stringLength(s: string) { // automatically returns `number`
-    return s.length;
-}
-
-let toString = (n: any) => `${n}`; // automatically returns string
-```
-
-
----
-
-<!-- .slide: data-transition="slide-in fade-out" -->
-
-###### Type inference: quite sophisticated
-
-```ts
-
-function moreComplicated() {
-  return someBooleanCheck()
-    ? 'yay'
-    : 42;
-}
-
-
-
-
-let result = moreComplicated();
-console.log(result.length);
-```
-
-Note: TypeScript can infer a _lot_. It’ll even infer more interesting types we haven’t talked about yet, like _union_ types. Here, TypeScript knows that we’re returning _either_ a string or an object with a key named “say” which has a string value. And when we go to use it, we’ll have to check what the type is, or TS will yell at us.
-
----
-
-<!-- .slide: data-transition="fade-in slide-out" -->
-
-###### Type inference: quite sophisticated
-
-```ts
-// returns `string | number`
-function moreComplicated(a: boolean) {
-  return someBooleanCheck()
-    ? 'yay'
-    : 42;
-}
-
-// Type error! We haven't checked whether `result` is a string or a
-// number, so TS will tell us we need to figure that out before we
-// try to do something with it.
-let result = moreComplicated();
-console.log(result.length);
-```
-
----
-
-<!-- .slide: data-transition="slide-in fade-out" -->
-
-###### Type inference: limits
-
-```ts
-let aBunchOfThings = []; 
-
-function whatIsThis(untypedThing) {
-  
-  
-  return untypedThing.length;
-}
-```
-
-Note: But it can’t infer _everything_. For example, if you create an empty array, you’ll need to tell it what _kind_ of array, or it’ll fall back to the `any` type.
-
-You also have to write function _argument_ types explicitly pretty much all the time; TS doesn’t try to do total program inference like some other languages do.
-
-Finally, when using _generic types_, which we’ll talk about in a minute, it will eventually fall over even when _you_ can see that there’s only a single type it could be. In that case, you _do_ have to write things out explicitly.
-
----
-
-<!-- .slide: data-transition="fade" -->
-
-###### Type inference: limits
-
-```ts
-let aBunchOfThings = []; // has type `any[]`
-
-function whatIsThis(untypedThing) {
-  
-  
-  return untypedThing.length;
-}
-```
-
----
-
-<!-- .slide: data-transition="fade-in slide-out" -->
-
-###### Type inference: limits
-
-```ts
-let aBunchOfThings = []; // has type `any[]`
-
-function whatIsThis(untypedThing) {
-  // Type error! We don't know that `untypedThing` *has*
-  // a `length` property! It's actually `any` here.
-  return untypedThing.length;
-}
-```
 
 ---
 
@@ -676,7 +646,128 @@ Note: My basic tack is I start with a `type` alias, and rarely go beyond that. T
 
 I should note: I’m offering an opinionated take here. This actually runs up against Microsoft’s view a little bit – they basically say to use interfaces for everything and not to use type aliases at all, because things should _always_ be open to being extended. I disagree! I often want to just write down a bunch of small types like LEGO blocks to fit together. But there’s room for different styles here, in any case.
 
+*****
+
+#### Structural typing
+
+TypeScript has a _structural_ type system.
+
+* Not like C++, Java, C♯
+* More like Elm, parts of OCaml, parts of Go
+
+(Don’t panic! It’s okay if you don’t have experience with _any_ of those.)
+
+Note: Okay, so let's pause briefly and talk about some of the "theory" aspects of what we just saw. In particular, as we saw with classes just a minute ago, TypeScript is a *structural* type system. That means that it is *not* like the type systems most people have experience with from C++, Java, C♯, etc.—or even F♯  It _is_ like Elm, parts of OCaml, parts of Haskell, etc. but most people’s idea of a type system comes from Java or C♯, and the differences can be very surprising.
+
 ---
+
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+##### Structural typing: _Types are just shapes._
+
+```ts
+interface Person {
+  name: string;
+}
+```
+
+Note: In a structural type system, types are _just shapes_. Anything with that shape can be used wherever the shape is required. So in this example, we have a `Person` shape – we’ll talk more about using `interface` to define shapes later.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### Structural typing: _Types are just shapes._
+
+```ts
+interface Person {
+  name: string;
+}
+
+function sayHello(p: Person) {
+  console.log(`Hello, ${p.name}!`);
+}
+```
+
+Note: Then we can define a function which takes a `Person`.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### Structural typing: _Types are just shapes._
+
+```ts
+interface Person {
+  name: string;
+}
+
+function sayHello(p: Person) {
+  console.log(`Hello, ${p.name}!`);
+}
+
+const person = {
+  name: 'Chris Krycho',
+  favoriteHobby: 'running',
+};
+```
+
+Note: Then we can create an object which _doesn’t_ explicitly call itself a `Person` but which _does_ match the shape.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### Structural typing: _Types are just shapes._
+
+```ts
+interface Person {
+  name: string;
+}
+
+function sayHello(p: Person) {
+  console.log(`Hello, ${p.name}!`);
+}
+
+const person = {
+  name: 'Chris Krycho',
+  favoriteHobby: 'running',
+};
+
+sayHello(person);
+```
+
+Note: But we can use that with the `sayHello` function, because it has the right shape – even though it has _more_ properties than needed, and even though it doesn’t have the _name_ that we used to define that shape.
+
+Again: shapes are the only thing TypeScript cares about! And this is a huge difference from C++ or Java or C♯, which all care whether the _name_ of the thing you’re using matches.
+
+---
+
+##### Structural typing: `class`
+
+A `class` is just a way to _define_ and _construct_ a shape.
+
+```ts
+class Person {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+function sayHello(p: Person) {
+  console.log(`Hello, ${p.name}!`);
+}
+
+const bill = { name: "Bill Pullen", employer: "Olo" };
+sayHello(bill); // "Hello, Bill Pullen!
+```
+<!-- .element: class="fragment" -->
+
+Note: Building on that: _names of types don’t matter_ in TypeScript. When you write a `class` definition, you’re just providing a definition of a shape, and a way to build that shape, all at once. So you can see here a function that takes a `Person`, and a `Person` is defined with a `class` – but TypeScript doesn’t care whether you constructed the shape using a class constructor an object literal. It only cares that you pass it something that matches the _shape_ you defined.
+
+*****
 
 #### “nullable” types: getting a handle on `null` and `undefined`!
 
@@ -1094,7 +1185,7 @@ Note: It's worth contrasting these with arrays, where you can have mixed types, 
 
 Note: Okay, so that’s it for TypeScript itself. We did not cover _everything_ in TypeScript, for sure, but we got through most stuff we’ll need. Any questions so far?
 
----
+*****
 
 ## TypeScript in Ember.js
 
