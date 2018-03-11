@@ -676,21 +676,27 @@ Note: The `find` function takes a `string` or a `Node`. If you pass it a number,
 
 ---
 
-#### Writing shapes
+#### Making our own types
 
-Since TS is all about shapes, let’s write some!
+<p class="invisible">*</p>
 
-* <!-- .element: class="fragment" --> `type` for “type aliases”
-* <!-- .element: class="fragment" --> `interface` for “extensible shapes”
-* <!-- .element: class="fragment" --> `class` for JS classes with annotations
+We have three tools:
 
-Note: Since TypeScript is all about shapes, how do we write them?
+* `type` for “type aliases”
+
+* `interface` for “extensible shapes”
+
+* `class` for JS classes with annotations
+
+Note: Okay, so now we know what types look like, and we've seen just a hint of how we make our own, but the reality is that we're all going to do a *lot* of this. We have a lot of new types that we make for our applications. We have three tools for doing this: `type` declarations for "type aliases", `interface` declarations for "extensible shapes," and `class` declarations for JavaScript classes with types.
 
 ---
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-##### Writing shapes: `type`
+##### Making our own types: `type`
+
+Just a way of giving a particular shape a name!
 
 ```ts
 function fetch(
@@ -705,6 +711,7 @@ function fetch(
   /* the implementation */
 }
 ```
+<!-- .element: class="fragment" -->
 
 Note: A type alias is a way of telling TypeScript “When I use this name, it’s just a shorthand for this shape!” We can write shapes inline, but that gets nasty quickly. So we can create an alias for them and use that instead.
 
@@ -712,7 +719,9 @@ Note: A type alias is a way of telling TypeScript “When I use this name, it’
 
 <!-- .slide: data-transition="fade" -->
 
-##### Writing shapes: `type`
+##### Making our own types: `type`
+
+Just a way of giving a particular shape a name!
 
 ```ts
 
@@ -733,7 +742,7 @@ function fetch(url: Url, options: Options): Promise<Response> {
 
 <!-- .slide: data-transition="fade-in slide-out" -->
 
-##### Writing shapes: `type`
+##### Making our own types: `type`
 
 ```ts
 type Url = string | Request;
@@ -752,26 +761,26 @@ function fetch(url: Url, options: Options): Promise<Response> {
 
 ---
 
-##### Writing shapes: `interface`
+##### Making our own types: `interface`
 
 ```ts
 interface Name {
-  primary: string;
+  primaryName: string;
 }
 
 interface WesternName extends Name {
-  middle?: string;
-  last: string;
+  middleName?: string;
+  lastName: string;
 }
 ```
 
-Note: Another way to write a shape is with an `interface`, which can be _extended_ and _implemented_. These are basically interchangeable with type aliases, except for those two differences. Here, the `WesternName` has all the properties of `Name` and adds in an optional `middle` and required `last` name. You can use these wherever you’d use a type alias… but also with classes!
+Note: Another way to write a shape is with an `interface`, which can be _extended_ and _implemented_. So we'll take a not-quite-as-Western-centric view and define an interface called `Name`, and we'll assume everyone has a primary name. (This is not true, by the way, but it's *more* accurate than most of our databases' view of the world.) Here, the `WesternName` has all the properties of `Name` and adds in an optional `middle` and required `last` name. It *extends* the other interface. And `interfaces` are also useful when you want to define a shape to use with more than one *class*.
 
 ---
 
 <!-- .slide: data-transition="slide-in face-out" -->
 
-##### Writing shapes: `class`
+##### Making our own types: `class`
 
 TypeScript classes are just JavaScript classes with type annotations.
 
@@ -787,44 +796,26 @@ class Person {
 function sayHello(p: Person) {
   console.log(`Hello, ${p.name}!`);
 }
+
+const bill = new Person('Bill Pullen');
+sayHello(bill); // "Hello, Bill Pullen!"
 ```
 
-Note: A TypeScript class is _basically_ just a JavaScript class with type annotations for all the bits attached to it.
+Note: So let's talk about classes! A TypeScript class is _basically_ just a JavaScript class with type annotations for all the bits attached to it.
+
+There's one other important thing to say about TypeScript classes, but we'll come back to that in a moment.
 
 ---
 
-<!-- .slide: data-transition="fade-in slide-out" -->
+##### Making our own types: `extends` and `implements`
 
-##### Writing shapes: `class`
+<p class="invisible">*</p>
 
-(But remember: they also define shapes!)
-
-```ts
-class Person {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-function sayHello(p: Person) {
-  console.log(`Hello, ${p.name}!`);
-}
-
-const bill = { name: "Bill Pullen", employer: "Olo" };
-sayHello(bill); // "Hello, Bill Pullen!
-```
-
-Note: But it’s also worth remembering that a `class` declaration _also_ defines a shape in TypeScript. So you can also think of it as being a way to define a shape and a way to _build an instance_ of the shape at the same time.
-
----
-
-##### Writing shapes: `extends` and `implements`
+An example:
 
 ```ts
 class Person implements Name {
-  first: string;
+  primaryName: string;
   age: number;
 }
 
@@ -833,42 +824,103 @@ class Programmer extends Person {
 }
 ```
 
-Note: classes can also implement interfaces and extend other classes. If they declare they implement an interface, TypeScript will check that everything the interface has, the class has! Meanwhile `extends` works just like it does in normal JavaScript: you attach to the prototype of the type you’re extending.
+Note: As I mentioned a minute ago, classes can implement interfaces. They can also extend other classes. If they declare they implement an interface, TypeScript will check that everything the interface has, the class has! If the class does *not* include everything required by the interface, you'll get a type error.
+
+Meanwhile `extends` works just like it does in normal JavaScript: you attach to the prototype of the type you’re extending, so you get all of its behavior with it.
 
 ---
 
-##### Writing shapes: when to use each
+##### Making our own types: `extends` and `implements`
+
+<p class="invisible">*</p>
+
+Interfaces:<!-- .element: class="fragment" data-fragment-index="1" -->
+
+- <!-- .element: class="fragment" data-fragment-index="1" --> `extends` gets the parent's *shape*
+
+<p class="invisible">*</p>
+
+Classes:<!-- .element: class="fragment" data-fragment-index="2" -->
+
+- <!-- .element: class="fragment" data-fragment-index="2" --> `implements` validates that it matches the *shape*
+- <!-- .element: class="fragment" data-fragment-index="2" --> `extends` gets the parent's *behavior* and *shape*
+
+Note: So to review:
+
+- In an interface, we can extend another interface. That means the new interface includes the shape of the interface we're extending *and* anything else we define.
+- In a class, we can *implement* an interface, which lets us check that we match the shape specified by the interface. We can also *extend* another class, and then we get its shape *and* all of its behavior, as well as any we add to it.
+
+---
+
+##### Making our own types: when to use each
 
 <p class="invisible">*</p>
 
 * <!-- .element: class="fragment" --> `type` as the default
-
 * <!-- .element: class="fragment" --> `interface` for defining shapes for more than one `class` to conform to
-
 * <!-- .element: class="fragment" --> `class` for a convenient way to get a shape and a constructor at the same time
 
 Note: My basic tack is I start with a `type` alias, and rarely go beyond that. That’s where you really get the “this is just documentation my editor helps me check!” approach. I switch to an `interface` only if I’m going to define multiple `class`es that need to implement a certain shape contract. And I use `class` pretty rarely _other_ than when I’m building Ember components or services or whatever. (My own code is mostly just functions, and `type` aliases work _great_ with functions!)
+
+That might surprise you because from what we've seen so far, `interface` declarations can do everything `type` alias declarations can do. But there are some really useful things you can do with `type` aliases that you *can't* do with `interface`s.
 
 I should note: I’m offering an opinionated take here. This actually runs up against Microsoft’s view a little bit – they basically say to use interfaces for everything and not to use type aliases at all, because things should _always_ be open to being extended. I disagree! I often want to just write down a bunch of small types like LEGO blocks to fit together. But there’s room for different styles here, in any case.
 
 *****
 
+### Theory break!
+
+<p class="invisible">*</p>
+
+<p class="invisible">*</p>
+
+> Why does he keep saying "shapes" all the time?
+> —you, roughly right now
+
+Note: Now, I keep using the word "shape" here and some of you are probably wondering why. We've also seen a *lot* of code already! So we're going to pause on the code front for a few and talk about some of the "theory" aspects of what we just saw.
+
+---
+
 #### Structural typing
+
+<p class="invisible">*</p>
 
 TypeScript has a _structural_ type system.
 
-* Not like C++, Java, C♯
+<p class="invisible">*</p>
+
+* Not like C++, Java, C♯, or even F♯
 * More like Elm, parts of OCaml, parts of Go
 
-(Don’t panic! It’s okay if you don’t have experience with _any_ of those.)
+<p class="invisible">*</p>
 
-Note: Okay, so let's pause briefly and talk about some of the "theory" aspects of what we just saw. In particular, as we saw with classes just a minute ago, TypeScript is a *structural* type system. That means that it is *not* like the type systems most people have experience with from C++, Java, C♯, etc.—or even F♯  It _is_ like Elm, parts of OCaml, parts of Haskell, etc. but most people’s idea of a type system comes from Java or C♯, and the differences can be very surprising.
+<!-- .element: class="fragment" data-fragment-index="1" --> (Don’t panic!)
+
+<!-- .element: class="fragment" data-fragment-index="1" --> (It’s okay if you don’t have experience with _any_ of those.)
+
+Note: In particular, as we saw with classes just a minute ago, TypeScript is a *structural* type system. That means that it is *not* like the type systems most people have experience with from C++, Java, C♯, etc.—or even F♯  It _is_ like Elm, parts of OCaml, parts of Haskell, etc. but most people’s idea of a type system comes from Java or C♯, and the differences can be very surprising.
+
+But don't panic! It's okay if you don't have any experience with any of those!
 
 ---
 
 <!-- .slide: data-transition="slide-in fade-out" -->
 
-##### Structural typing: _Types are just shapes._
+#### Structural typing: _Types are just shapes._
+
+<p class="invisible">*</p>
+
+<img
+  src="/img/square-peg-round-hole.gif"
+  style="height: 100%; width: 100%" />
+
+Note: In a structural type system, types are _just shapes_. Anything with that shape can be used wherever the shape is required.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+#### Structural typing: _Types are just shapes._
 
 ```ts
 interface Person {
@@ -876,13 +928,13 @@ interface Person {
 }
 ```
 
-Note: In a structural type system, types are _just shapes_. Anything with that shape can be used wherever the shape is required. So in this example, we have a `Person` shape – we’ll talk more about using `interface` to define shapes later.
+Note: Let's make that a little more concrete with some code. (Like I said: a *short* theory break! But now it's theory illustrated with code, instead of with really terrible line art.) So in this example, we have a `Person` shape – we’ll talk more about using `interface` to define shapes later.
 
 ---
 
 <!-- .slide: data-transition="fade" -->
 
-##### Structural typing: _Types are just shapes._
+#### Structural typing: _Types are just shapes._
 
 ```ts
 interface Person {
@@ -900,7 +952,7 @@ Note: Then we can define a function which takes a `Person`.
 
 <!-- .slide: data-transition="fade" -->
 
-##### Structural typing: _Types are just shapes._
+#### Structural typing: _Types are just shapes._
 
 ```ts
 interface Person {
@@ -923,7 +975,7 @@ Note: Then we can create an object which _doesn’t_ explicitly call itself a `P
 
 <!-- .slide: data-transition="fade" -->
 
-##### Structural typing: _Types are just shapes._
+#### Structural typing: _Types are just shapes._
 
 ```ts
 interface Person {
@@ -965,14 +1017,32 @@ function sayHello(p: Person) {
   console.log(`Hello, ${p.name}!`);
 }
 
-const bill = { name: "Bill Pullen", employer: "Olo" };
-sayHello(bill); // "Hello, Bill Pullen!
+const jon = { name: "Jon Rossway", employer: "Olo" };
+sayHello(jon); // "Hello, Jon Rossway!
 ```
 <!-- .element: class="fragment" -->
 
 Note: Building on that: _names of types don’t matter_ in TypeScript. When you write a `class` definition, you’re just providing a definition of a shape, and a way to build that shape, all at once. So you can see here a function that takes a `Person`, and a `Person` is defined with a `class` – but TypeScript doesn’t care whether you constructed the shape using a class constructor an object literal. It only cares that you pass it something that matches the _shape_ you defined.
 
 *****
+
+### Other types
+
+<p class="invisible">*</p>
+
+Okay, back into type signatures!
+
+<p class="invisible">*</p>
+
+- nullable/optional types
+
+- generics
+
+- other, even snazzier types
+
+Note: Okay, that gives us a good idea of the *theory* we need to know to understand what's going on in TypeScript in general. Let's dig back into more kinds of types
+
+---
 
 #### “nullable” types: getting a handle on `null` and `undefined`!
 
@@ -998,7 +1068,7 @@ function parseInt(value: string, radix?: number) {
 }
 
 type Name = {
-  primary: string;
+  primaryName: string;
   surname?: string;
 }
 ```
@@ -1020,12 +1090,55 @@ Likewise, if we were trying to build up a not-so-Western-focused version of a _n
 Turn on `"strictNullChecking": true` in `tsconfig.json`!
 
 ```ts
-let el: HTMLElement = document.querySelector('some-id');
+let el: HTMLElement = document.querySelector('#some-id');
 el.focus();
 ```
 <!-- .element: class="fragment" -->
 
 Note: We can combine optional declarations with the `"strictNullChecking"` compiler option in our `tsconfig.json` file, which is where _all_ the compiler options go. We’ll look at that file a bit in the second session. For now, it’s just important to know that if we turn on `strictNullChecking`, anywhere that _could_ be `null` or `undefined`, TypeScript will require us to check for it! This can be a little annoying, but it means fewer bugs in production.
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### “nullable” types: strict null checking
+
+<p class="invisible">*</p>
+
+Turn on `"strictNullChecking": true` in `tsconfig.json`!
+
+```ts
+let el: HTMLElement = document.querySelector('#some-id');
+el.focus(); // Type error! This could be `null`!
+```
+
+Note: If you’re starting a _new_ Ember app with TypeScript, I’d turn this flag on at the start. If you’re dealing with an existing app... well, that’s probably going to be too hard, but it’s worth aiming to get there eventually!
+
+---
+
+<!-- .slide: data-transition="fade" -->
+
+##### “nullable” types: strict null checking
+
+<p class="invisible">*</p>
+
+Turn on `"strictNullChecking": true` in `tsconfig.json`!
+
+```ts
+let el: HTMLElement = document.querySelector('#some-id');
+el.focus(); // Type error! This could be `null`!
+```
+
+A possible objection:
+
+ >But I know that `id="some-id"` will always be set!
+
+***
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+<!-- .element: class="fragment" data-fragment-index="1" --> Will it? Will *everyone* remember that *forever*?
+
+Note: Now, one possible objection here is that you *know* that this ID exists. And you might! But one thing TypeScript does is help us scale past what we individually remember *today*. The thing is, you know what invariants you intend for a given part of your app to maintain. *Today*. But someone else who comes along to work on the code might *not* know what you intend. For that matter, you yourself might not remember in six months.
 
 ---
 
@@ -1035,22 +1148,16 @@ Note: We can combine optional declarations with the `"strictNullChecking"` compi
 
 <p class="invisible">*</p>
 
-Turn on `"strictNullChecking": true` in `tsconfig.json`!
+A workaround:
 
 ```ts
-let el: HTMLElement = document.querySelector('some-id');
+let el: HTMLElement | null = document.querySelector('#some-id');
+if (el === null) throw "The `some-id` selector should always exist.";
+
 el.focus(); // Type error! This could be `null`!
 ```
 
-<blockquote class="fragment" data-fragment-index="1"><p>But `id="some-id"` will always be set!</p></blockquote>
 
-***
-<!-- .element: class="fragment" data-fragment-index="2" -->
-
-<!-- .element: class="fragment" data-fragment-index="2" --> Will it? Will *everyone* remember that *forever*?
-
-
-Note: If you’re starting a _new_ Ember app with TypeScript, I’d turn this flag on at the start. If you’re dealing with an existing app... well, that’s probably going to be too hard, but it’s worth aiming to get there eventually!
 
 ---
 
@@ -1300,6 +1407,26 @@ Note: An _intersection_ type is the counterpart to a _union_ type. Instead of sa
 
 ---
 
+##### Aside: on types and interfaces
+
+<p class="invisible">*</p>
+
+<p class="invisible">*</p>
+
+<!-- .element: class="fragment" -->Union and intersection types: `type`’s secret sauce.
+
+<p class="invisible">*</p>
+
+<!-- .element: class="fragment" -->`interface` cannot do `|` or `&` types
+
+<p class="invisible">*</p>
+
+<!-- .element: class="fragment" -->Also better for the super-powered types that power our Ember types, etc.
+
+Note: one of the big reasons I prefer `type` aliases over `interface` is that they can do sum and intersection types. They also work for some of the more complicated types we use under the hood in a way that classes and interfaces don't.
+
+---
+
 <!-- .slide: data-transition="slide-in fade-out" -->
 
 ##### tuples
@@ -1327,7 +1454,7 @@ Note: then this would be valid…
 
 ---
 
-<!-- .slide: data-transition="fade" -->
+<!-- .slide: data-transition="fade-in slide-out" -->
 
 ##### tuples
 
@@ -1348,23 +1475,34 @@ These are handy for return types where you need to return more than one things �
 
 ---
 
-<!-- .slide: data-transition="fade-in slide-out" -->
+<!-- .slide: data-transition="slide-in fade-out" -->
 
-#### tuples
+##### tuples vs. arrays
 
 ```ts
+// tuple
 type NameAndAge = [string, number];
 
-// valid! ✅
-let good: NameAndAge = ["Chris Krycho", 30];
-
-// type errors! ❌
-let bad1: NameAndAge = [30, "Chris Krycho"];
-let bad2: NameAndAge = ["Chris Krycho", 30, { is: 'a nerd' }]
+// array
+type StrsAndNums = (string | number)[];     // shorthand
+type StrsAndNums = Array<string | number>;  // generic
 ```
 
+Note: It's worth contrasting these with arrays, where you can have mixed types, but the order is not fixed. First, here's the difference between declaring a tuple and an array. Here, there is no set length, and they can come in any order. They just still have to be all the set of types we declared, so you still can't throw in *random* types.
+
+---
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+##### tuples vs. arrays
+
 ```ts
-type StrsAndNums = Array<string | number>
+// tuple
+type NameAndAge = [string, number];
+
+// array
+type StrsAndNums = (string | number)[];     // shorthand
+type StrsAndNums = Array<string | number>;  // generic
 
 // valid! ✅
 let good1: StrsAndNums = ["Chris Krycho", 30];
