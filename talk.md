@@ -201,10 +201,10 @@ function stringLength(s) {
   return s.length;
 }
 
-let toString = (anything) => `${anything};
+let toString = (anything) => `${anything}`;
 ```
 
-Note: we're starting out here with some extremely basic JavaScript. We'll build up as we go.
+Note: We're starting out here with some extremely basic JavaScript. We'll build up as we go.
 
 ---
 
@@ -223,13 +223,17 @@ function stringLength(s: string): number {
     return s.length;
 }
 
-let toString = (anything: any): string => `${anything};
+let toString = (anything: any): string => `${anything}`;
 ```
 
 Note: So when you’re using these types in your program, you’ll need to write down some types! Here are some types of things you might want to know how to write down:
 
-* the primitive types
+* the primitive types: strings, numbers, booleans
 * functions
+
+We'll also talk about arrays and objects, but let's dig in here a bit first.
+
+We write a variable with a type declaration by adding `: <type name>` after the name of the variable.
 
 ---
 
@@ -248,7 +252,7 @@ function stringLength(s: string) {
     return s.length;
 }
 
-let toString = (anything: any) => `${n}`;
+let toString = (anything: any) => `${anything}`;
 ```
 
 Note: A lot of times, you _won’t_ have to write down types. Anywhere you assign a value, TypeScript _infers_ the type for you. Similarly, TypeScript will figure out function return types for you.
@@ -437,6 +441,8 @@ let me: {
 
 Note: if we write out the type inline like we have been so far with other types, it looks like this.
 
+The big thing to notice here is the way that the type looks a lot like the way you write an instance of the type. Instead of putting the *value* associated with the key, though, you put the *type* there. So instead of `name: "Chris"`, we have `name: string` in the type definition.
+
 ---
 
 <!-- .slide: data-transition="fade" -->
@@ -459,9 +465,7 @@ let me: JavaScripter = {
 };
 ```
 
-Note: Obviously this is pretty hard to follow, so TypeScript lets us extract that into a named type. Here, we'll say "This is what a JavaScripter looks like: someone with a name, an age, and a boolean to say whether they like Ember.js or not."
-
-The big thing to notice here is the way that the type looks a lot like the way you write an instance of the type. Instead of putting the *value* associated with the key, though, you put the *type* there. So instead of `name: "Chris"`, we have `name: string` in the type definition.
+Note: Obviously this is pretty hard to follow, so TypeScript lets us extract that into a named type. Here, we'll say "This is what a JavaScripter looks like: someone with a name, an age, and a boolean to say whether they like Ember.js or not." (We'll talk more about this `type` keyword in a minute.)
 
 ---
 
@@ -485,7 +489,7 @@ let me = {
 };
 ```
 
-Note: and of course, if we didn't write need that name to be used anywhere else, we could just write it out like this: TypeScript will *infer* that the type of the `name` field is `string`, and so on.
+Note: And of course, if we didn't write need that name to be used anywhere else, we could just write it out like this: TypeScript will *infer* that the type of the `name` field is `string`, and so on.
 
 ---
 
@@ -520,7 +524,7 @@ let userDOM = getUserDOM('chris');
 console.log(result.innerText);
 ```
 
-Note: TypeScript can infer a _lot_. It’ll even infer more interesting types we haven’t talked about yet, like _union_ types. Here, TypeScript knows that we’re returning _either_ a string or an object with a key named “say” which has a string value. And when we go to use it, we’ll have to check what the type is, or TS will yell at us.
+Note: TypeScript can infer a _lot_. It’ll even infer more interesting types we haven’t talked about yet, like _union_ types. 
 
 ---
 
@@ -541,6 +545,8 @@ let userDOM = getUserDOM('chris');
 console.log(result.textContent);
 ```
 
+Note: Here, TypeScript knows that we’re returning _either_ an `HTMLElement` *or* `null`. And when we go to use it, we’ll have to check what the type is, or TS will yell at us.
+
 ---
 
 <!-- .slide: data-transition="slide-in fade-out" -->
@@ -557,11 +563,7 @@ function badStringLength(untypedThing) {
 }
 ```
 
-Note: But it can’t infer _everything_. For example, if you create an empty array, you’ll need to tell it what _kind_ of array, or it’ll fall back to the `any` type.
-
-You also have to write function _argument_ types explicitly pretty much all the time; TS doesn’t try to do total program inference like some other languages do.
-
-Finally, when using _generic types_, which we’ll talk about in a minute, it will eventually fall over even when _you_ can see that there’s only a single type it could be. In that case, you _do_ have to write things out explicitly.
+Note: But it can’t infer _everything_. 
 
 ---
 
@@ -579,6 +581,8 @@ function badStringLength(untypedThing) {
 }
 ```
 
+Note: For example, if you create an empty array, you’ll need to tell it what _kind_ of array, or it’ll fall back to the `any` type.
+
 ---
 
 <!-- .slide: data-transition="fade-in slide-out" -->
@@ -594,6 +598,10 @@ function badStringLength(untypedThing) {
   return untypedThing.length;
 }
 ```
+
+Note: You also have to write function _argument_ types explicitly pretty much all the time; TS doesn’t try to do total program inference like some other languages do.
+
+Finally, when using _generic types_, which we’ll talk about in a minute, it will eventually fall over even when _you_ can see that there’s only a single type it could be. In that case, you _do_ have to write things out explicitly.
 
 ---
 
@@ -1074,7 +1082,7 @@ type Name = {
 
 Note: The optional type annotation is just a question mark, applied to optional function arguments or optional properties on an object type.
 
-Here, for example, we have a function which joins two strings... but only if the second string is supplied; otherwise it just returns the first string. The question mark tells TypeScript that it’s legitimate to leave off the second argument.
+Here, for example, we have the type definition for `parseInt`. The question mark tells TypeScript that it’s legitimate to leave off the radix. That's a bad idea, but it's *allowed*.
 
 Likewise, if we were trying to build up a not-so-Western-focused version of a _name_ type, we might say that everyone has a primary name, but that a surname is optional, and that there are also optional other parts to the name. To build a name, we always need a `primary` value, but we can make a name with _neither_, _either_, or _both_ of the other keys.
 
@@ -1152,7 +1160,9 @@ A possible objection:
 
 <!-- .element: class="fragment" data-fragment-index="2" --> Will it? Will *everyone* remember that *forever*?
 
-Note: Now, one possible objection here is that you *know* that this ID exists. And you might! But one thing TypeScript does is help us scale past what we individually remember *today*. The thing is, you know what invariants you intend for a given part of your app to maintain. *Today*. But someone else who comes along to work on the code might *not* know what you intend. For that matter, you yourself might not remember in six months.
+Note: We can handle the bad case of course, by declaring the accurate type and throwing an error here if the element doesn't exist.
+
+But one possible objection here is that you *know* that this ID exists. And you might! But one thing TypeScript does is help us scale past what we individually remember *today*. The thing is, you know what invariants you intend for a given part of your app to maintain. *Today*. But someone else who comes along to work on the code might *not* know what you intend. For that matter, you yourself might not remember in six months.
 
 ---
 
@@ -1323,9 +1333,7 @@ let hallo: Hallo = {
 }
 ```
 
-Note: _literal_ types are types where the only value they can have is the specific value you write down. Any kind of literal you can write in JavaScript – numbers, strings, booleans, symbols, arrays, objects, and crazy combinations of them – can be a _type_ in TypeScript. So here, the `value` key in any `Hallo` type is _only_ allowed to be the exact string “hallo”.
-
-We’ll see a handy example of how we can use this in the _next_ kind of type: union types.
+Note: _literal_ types are types where the only value they can have is the specific value you write down. Any kind of literal you can write in JavaScript – numbers, strings, booleans, symbols, arrays, objects, and crazy combinations of them – can be a _type_ in TypeScript. (We’ll see a handy example of how we can use this in the _next_ kind of type: union types.)
 
 ---
 
@@ -1343,6 +1351,8 @@ let hallo: Hallo = {
   value: 'ahoy',
 }
 ```
+
+Note: For now, we just need to notice that the `value` key in any `Hallo` type is _only_ allowed to be the exact string “hallo”. If it's 'ahoy' instead, we'll get a type error!
 
 ---
 
@@ -1784,7 +1794,7 @@ export default class UserProfile extends Component {
 
 Note: In the `computed` property callback, we specify the `this` type. More on that in just a minute!
 
-Note: You may also have noticed that I didn’t do `.get()` here. That’s because I’m doing _everything_ from this point in the workshop forward with Ember 3.1 in mind. For nearly everything, we just get to do `this.name` instead of `this.get('name')`. (Proxied values are the only exception!)
+You may also have noticed that I didn’t do `.get()` here. That’s because I’m doing _everything_ from this point in the workshop forward with Ember 3.1 in mind. For nearly everything, we just get to do `this.name` instead of `this.get('name')`. (Proxied values are the only exception!)
 
 ---
 
